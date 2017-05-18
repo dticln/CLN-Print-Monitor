@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CLNPrintMonitor.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,13 @@ namespace CLNPrintMonitor.Controller
 {
     public partial class PrinterController : Form
     {
-        public PrinterController()
+        private Printer printer;
+        
+        public PrinterController(Printer printer)
         {
             InitializeComponent();
+            this.printer = printer;
+            this.lblName.Text = printer.Name;
         }
     }
 }

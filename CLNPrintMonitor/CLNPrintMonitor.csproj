@@ -88,6 +88,9 @@
     <EmbeddedResource Include="Controller\MainController.resx">
       <DependentUpon>MainController.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controller\PrinterController.resx">
+      <DependentUpon>PrinterController.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

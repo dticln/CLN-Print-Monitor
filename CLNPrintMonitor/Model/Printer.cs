@@ -12,7 +12,7 @@ namespace CLNPrintMonitor.Model
     /// <summary>
     /// Struct for printer basic paper input
     /// </summary>
-    struct PaperInput 
+    public struct PaperInput 
     {
         public PaperInput(string name, string status, int capacity, string scale, string type)
         {
@@ -39,7 +39,7 @@ namespace CLNPrintMonitor.Model
     /// <summary>
     /// Struct for printer basic paper output
     /// </summary>
-    struct PaperOutput 
+    public struct PaperOutput 
     {
         public PaperOutput(string name, string status, int capacity)
         {
@@ -60,7 +60,7 @@ namespace CLNPrintMonitor.Model
     /// <summary>
     /// Enum for Status managment and UI integration
     /// </summary>
-    enum StatusIcon {
+    public enum StatusIcon {
         Ink0 = 0,
         Ink30 = 1,
         Ink60 = 2,
@@ -73,7 +73,7 @@ namespace CLNPrintMonitor.Model
     /// <summary>
     /// Represents a printer
     /// </summary>
-    class Printer
+    public class Printer
     {
         internal static string OK = "OK";
         internal static string HTTP = "http://";

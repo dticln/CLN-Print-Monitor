@@ -1,4 +1,4 @@
-﻿namespace CLNPrintMonitor
+﻿namespace CLNPrintMonitor.Controller
 {
     partial class Main
     {
@@ -82,6 +82,7 @@
             this.lvwMain.TileSize = new System.Drawing.Size(250, 150);
             this.lvwMain.UseCompatibleStateImageBehavior = false;
             this.lvwMain.View = System.Windows.Forms.View.Tile;
+            this.lvwMain.ItemActivate += new System.EventHandler(this.NewPrinterForm);
             // 
             // clnName
             // 
@@ -190,18 +191,18 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
             this.toolStripMenuItem1.Text = "Relatórios";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(123, 6);
             // 
             // tsmExit
             // 
             this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(152, 22);
+            this.tsmExit.Size = new System.Drawing.Size(126, 22);
             this.tsmExit.Text = "Sair";
             this.tsmExit.Click += new System.EventHandler(this.TsmExitClick);
             // 

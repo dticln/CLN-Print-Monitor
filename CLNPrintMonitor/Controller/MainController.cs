@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CLNPrintMonitor
+namespace CLNPrintMonitor.Controller
 {
     public partial class Main : Form
     {
@@ -178,6 +178,24 @@ namespace CLNPrintMonitor
         {
             Application.Exit();
         }
-        
+
+        private void NewPrinterForm(object sender, EventArgs e)
+        {
+            ListView list = sender as ListView;
+            ListViewItem clicked = list.SelectedItems[0];
+            Printer printer = null;
+            for (int i = 0; i < printers.Count; i++)
+            {
+                if(printers[i].Address.ToString() == clicked.SubItems[1].Text)
+                {
+                    printer = printers[i];
+                }
+            }
+            if(printer != null)
+            {
+                PrinterController form = new PrinterController(printer);
+                form.Show();
+            }
+        }
     }
 }
