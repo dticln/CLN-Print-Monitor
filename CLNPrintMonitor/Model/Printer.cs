@@ -191,6 +191,11 @@ namespace CLNPrintMonitor.Model
             attributes.RemoveAll(item => item == Printer.UNKNOWN_WARNING);
         }
 
+        /// <summary>
+        /// Create a HtmlDocument from string
+        /// </summary>
+        /// <param name="text">Data from request</param>
+        /// <returns>A HtmlDocument from text</returns>
         private HtmlDocument CreateDocument(string text)
         {
             HtmlDocument document = new HtmlDocument();
@@ -198,41 +203,69 @@ namespace CLNPrintMonitor.Model
             return document;
         }
 
-        private void SearchForPrinterInformation(List<string> list, HtmlDocument searchIn)
+        /// <summary>
+        /// Search for printer information inside HtmlDocument
+        /// </summary>
+        /// <param name="attributes">Extrated attributes from page</param>
+        /// <param name="searchIn">Where it will be searched</param>
+        private void SearchForPrinterInformation(List<string> attributes, HtmlDocument searchIn)
         {
             foreach (HtmlNode span in searchIn.DocumentNode.SelectNodes(Printer.NODE_QUERY))
             {
-                list.Add(span.InnerText);
+                attributes.Add(span.InnerText);
             }
         }
 
-        private void SearchForPrinterStatus(List<string> list, HtmlDocument searchIn)
+        /// <summary>
+        /// Search for printer status inside HtmlDocument
+        /// </summary>
+        /// <param name="attributes">Extrated attributes from page</param>
+        /// <param name="searchIn">Where it will be searched</param>
+        private void SearchForPrinterStatus(List<string> attributes, HtmlDocument searchIn)
         {
             foreach (HtmlNode td in searchIn.DocumentNode.SelectNodes("//td"))
             {
                 string inner = Helpers.Normalize(td.InnerText);
                 if (inner != string.Empty)
                 {
-                    list.Add(inner);
+                    attributes.Add(inner);
                 }
             }
         }
-        
-        private bool SetInformations(List<string> list)
+
+        /// <summary>
+        /// Bind informations in this Printer object 
+        /// </summary>
+        /// <param name="attributes">Extrated attributes</param>
+        /// <returns>Response</returns>
+        private bool SetInformations(List<string> attributes)
         {
-            this.RemoveWarning(list);
+            this.RemoveWarning(attributes);
             try
             {
-                this.model = list[0];
-                this.deviceType = list[28];
-                this.speed = list[30];
-                this.tonerCapacity = list[32];
-                this.ink = Helpers.GetInteger(list[2]);
-                this.maintenance = Helpers.GetInteger(list[34]);
-                this.fc = Helpers.GetInteger(list[36]);
-                this.defaultInput = new PaperInput(list[8], list[9], Int32.Parse(list[11]), list[12], list[13]);
-                this.supplyMF = new PaperInput(list[14], list[15], Int32.Parse(list[17]), list[18], list[19]);
-                this.defaultOutput = new PaperOutput(list[23], list[24], Int32.Parse(list[26]));
+                this.model = attributes[0];
+                this.deviceType = attributes[28];
+                this.speed = attributes[30];
+                this.tonerCapacity = attributes[32];
+                this.ink = Helpers.GetInteger(attributes[2]);
+                this.maintenance = Helpers.GetInteger(attributes[34]);
+                this.fc = Helpers.GetInteger(attributes[36]);
+                this.defaultInput = new PaperInput(
+                    attributes[8], 
+                    attributes[9], 
+                    Int32.Parse(attributes[11]), 
+                    attributes[12], 
+                    attributes[13]);
+                this.supplyMF = new PaperInput(
+                    attributes[14], 
+                    attributes[15], 
+                    Int32.Parse(attributes[17]), 
+                    attributes[18], 
+                    attributes[19]);
+                this.defaultOutput = new PaperOutput(
+                    attributes[23], 
+                    attributes[24], 
+                    Int32.Parse(attributes[26]));
                 this.SetStatusIcon();
                 return true;
             } catch (Exception) { 
@@ -241,6 +274,9 @@ namespace CLNPrintMonitor.Model
             }
         }
 
+        /// <summary>
+        /// Set the status icon using the printer attributes
+        /// </summary>
         private void SetStatusIcon()
         {
             if (this.model == null)

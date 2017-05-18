@@ -4,7 +4,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -142,5 +141,6 @@ namespace CLNPrintMonitor
                 InvokeUpdateItems();
             }).Start();
         }
+        
     }
 }
