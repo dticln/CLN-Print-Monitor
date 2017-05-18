@@ -14,7 +14,7 @@ namespace CLNPrintMonitor
     {
 
         private ObservableCollection<Printer> printers;
-
+        
         public Main()
         {
             InitializeComponent();
@@ -33,7 +33,15 @@ namespace CLNPrintMonitor
             };
             this.lvwMain.LargeImageList.Images.AddRange(range);
         }
-        
+
+        /// <summary>
+        /// Button click action
+        /// Include a new printer in the printers list
+        /// </summary>
+        /// <see cref="printers"/>
+        /// <see cref="Printer"/>
+        /// <param name="sender">Clicked button</param>
+        /// <param name="e">Click event arg</param>
         private void BtnAddPrinterClickAsync(object sender, EventArgs e)
         {
             String strIp = tbxIpPrinter.Text;
@@ -60,6 +68,12 @@ namespace CLNPrintMonitor
             tbxNamePrinter.Text = "";
         }
 
+        /// <summary>
+        /// Handler for CollectionChanged in ObservableCollection in printers list
+        /// </summary>
+        /// <see cref="printers"/>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -80,6 +94,10 @@ namespace CLNPrintMonitor
             }
         }
         
+        /// <summary>
+        /// Invoke in UIThread the lvwMain.Items.Add() method
+        /// </summary>
+        /// <param name="item">Add new item in printers list</param>
         private void InvokeAddItems(ListViewItem item)
         {
             if (InvokeRequired)
@@ -90,6 +108,11 @@ namespace CLNPrintMonitor
             lvwMain.Items.Add(item);
         }
 
+        /// <summary>
+        /// Change an item Text in UIThread,
+        /// searching for the target item by IPV4 address in printer object
+        /// </summary>
+        /// <param name="printer">New printer informations</param>
         private void InvokeUpdateItem(Printer printer)
         {
             if (InvokeRequired)
@@ -107,6 +130,10 @@ namespace CLNPrintMonitor
             }
         }
 
+        /// <summary>
+        /// Change all items Text in UIThread
+        /// using a printers list
+        /// </summary>
         private void InvokeUpdateItems()
         {
             if (InvokeRequired)
@@ -129,6 +156,11 @@ namespace CLNPrintMonitor
             }
         }
         
+        /// <summary>
+        /// Every 30 seconds execute printer status update
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TmrRefreshTick(object sender, EventArgs e)
         {
             new Task(async () =>
