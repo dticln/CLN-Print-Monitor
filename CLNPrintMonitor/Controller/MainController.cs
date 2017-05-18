@@ -173,6 +173,10 @@ namespace CLNPrintMonitor
                 InvokeUpdateItems();
             }).Start();
         }
-        
+
+        private void TsmExitClick(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

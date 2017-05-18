@@ -68,19 +68,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DbDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Main.cs">
+    <Compile Include="Controller\MainController.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="Controller\MainController.Designer.cs">
+      <DependentUpon>MainController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Interfaces\IPrinter.cs" />
     <Compile Include="Model\Printer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Helpers.cs" />
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+    <EmbeddedResource Include="Controller\MainController.resx">
+      <DependentUpon>MainController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
