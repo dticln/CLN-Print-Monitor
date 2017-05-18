@@ -63,6 +63,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\PrinterController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controller\PrinterController.Designer.cs">
+      <DependentUpon>PrinterController.cs</DependentUpon>
+    </Compile>
     <Compile Include="DbDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
