@@ -49,9 +49,14 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmExit = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmsListViewItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.smiRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.sspDeleteSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.smiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.mnsHeader.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.cmsListViewItem.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAddPrinter
@@ -82,7 +87,8 @@
             this.lvwMain.TileSize = new System.Drawing.Size(250, 150);
             this.lvwMain.UseCompatibleStateImageBehavior = false;
             this.lvwMain.View = System.Windows.Forms.View.Tile;
-            this.lvwMain.ItemActivate += new System.EventHandler(this.NewPrinterForm);
+            this.lvwMain.ItemActivate += new System.EventHandler(this.ShowPrinterForm);
+            this.lvwMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ListViewClickHandler);
             // 
             // clnName
             // 
@@ -191,18 +197,18 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem1.Text = "Relatórios";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(123, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // tsmExit
             // 
             this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(126, 22);
+            this.tsmExit.Size = new System.Drawing.Size(152, 22);
             this.tsmExit.Text = "Sair";
             this.tsmExit.Click += new System.EventHandler(this.TsmExitClick);
             // 
@@ -218,6 +224,34 @@
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Impressoras";
+            // 
+            // cmsListViewItem
+            // 
+            this.cmsListViewItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.smiRename,
+            this.sspDeleteSeparator,
+            this.smiDelete});
+            this.cmsListViewItem.Name = "cmsListViewItem";
+            this.cmsListViewItem.Size = new System.Drawing.Size(153, 76);
+            // 
+            // smiRename
+            // 
+            this.smiRename.Name = "smiRename";
+            this.smiRename.Size = new System.Drawing.Size(152, 22);
+            this.smiRename.Text = "Renomear";
+            this.smiRename.Click += new System.EventHandler(this.NewItemRenameForm);
+            // 
+            // sspDeleteSeparator
+            // 
+            this.sspDeleteSeparator.Name = "sspDeleteSeparator";
+            this.sspDeleteSeparator.Size = new System.Drawing.Size(149, 6);
+            // 
+            // smiDelete
+            // 
+            this.smiDelete.Name = "smiDelete";
+            this.smiDelete.Size = new System.Drawing.Size(152, 22);
+            this.smiDelete.Text = "Excluir";
+            this.smiDelete.Click += new System.EventHandler(this.NewItemDeleteForm);
             // 
             // Main
             // 
@@ -238,6 +272,7 @@
             this.mnsHeader.ResumeLayout(false);
             this.mnsHeader.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.cmsListViewItem.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -264,6 +299,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsmExit;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ContextMenuStrip cmsListViewItem;
+        private System.Windows.Forms.ToolStripMenuItem smiRename;
+        private System.Windows.Forms.ToolStripSeparator sspDeleteSeparator;
+        private System.Windows.Forms.ToolStripMenuItem smiDelete;
     }
 }
 

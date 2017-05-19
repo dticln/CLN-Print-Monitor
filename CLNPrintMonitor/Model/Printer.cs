@@ -1,4 +1,5 @@
-﻿using CLNPrintMonitor.Util;
+﻿using CLNPrintMonitor.Controller;
+using CLNPrintMonitor.Util;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace CLNPrintMonitor.Model
     /// <summary>
     /// Represents a printer
     /// </summary>
-    public class Printer
+    public class Printer 
     {
         internal static string OK = "OK";
         internal static string HTTP = "http://";
@@ -96,6 +97,8 @@ namespace CLNPrintMonitor.Model
         private PaperInput supplyMF;
         private PaperOutput defaultOutput;
         private StatusIcon status;
+        private UpdateUIHandler updateUIInformation;
+        private PrinterController controllerUIRelation;
 
         public IPAddress Address { get => address; }
         public string Name { get => name; }
@@ -110,7 +113,11 @@ namespace CLNPrintMonitor.Model
         public PaperInput SupplyMF { get => supplyMF; }
         public PaperOutput DefaultOutput { get => defaultOutput; }
         public StatusIcon Status { get => status; }
-        
+        public UpdateUIHandler UpdateUIInformation { get => updateUIInformation; set => updateUIInformation = value; }
+        public PrinterController ControllerUIRelation { get => controllerUIRelation; set => controllerUIRelation = value; }
+
+        public delegate void UpdateUIHandler(PrinterController relation);
+
         /// <summary>
         /// Basic constructor for a printer 
         /// </summary>
@@ -267,6 +274,10 @@ namespace CLNPrintMonitor.Model
                     attributes[24], 
                     Int32.Parse(attributes[26]));
                 this.SetStatusIcon();
+                if(UpdateUIInformation != null)
+                {
+                    this.UpdateUIInformation(this.controllerUIRelation);
+                }
                 return true;
             } catch (Exception) { 
                 this.SetStatusIcon();
@@ -310,7 +321,5 @@ namespace CLNPrintMonitor.Model
                 this.status = StatusIcon.Ink100;
             }
         }
-        
-
     }
 }

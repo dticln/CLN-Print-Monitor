@@ -14,7 +14,11 @@ namespace CLNPrintMonitor.Controller
     {
 
         private ObservableCollection<Printer> printers;
+        private PrinterController childrenForm;
         
+        /// <summary>
+        /// Initialize component, ListView and printers ObservableCollection
+        /// </summary>
         public Main()
         {
             InitializeComponent();
@@ -34,78 +38,46 @@ namespace CLNPrintMonitor.Controller
             this.lvwMain.LargeImageList.Images.AddRange(range);
         }
 
-        /// <summary>
-        /// Button click action
-        /// Include a new printer in the printers list
-        /// </summary>
-        /// <see cref="printers"/>
-        /// <see cref="Printer"/>
-        /// <param name="sender">Clicked button</param>
-        /// <param name="e">Click event arg</param>
-        private void BtnAddPrinterClickAsync(object sender, EventArgs e)
+        private Printer FindPrinter(string Ip)
         {
-            String strIp = tbxIpPrinter.Text;
-            String name = tbxNamePrinter.Text;
-            IPAddress ipv4;
-            if (strIp != String.Empty && 
-                name != String.Empty && 
-                IPAddress.TryParse(strIp, out ipv4))
+            for (int i = 0; i < this.printers.Count; i++)
             {
-                new Task(async () =>
+                if (this.printers[i].Address.ToString() == Ip)
                 {
-                    Printer printer = new Printer(name, ipv4);
-                    this.printers.Add(printer);
-                    if(await printer.GetInformationFromDevice())
-                    {
-                        InvokeUpdateItem(printer);
-                    }
-                }).Start();
-            } else
-            {
-                MessageBox.Show("O endereço IP deve seguir os padrões de formatação.", "Endereço IP inválido", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return this.printers[i];
+                }
             }
-            tbxIpPrinter.Text = "";
-            tbxNamePrinter.Text = "";
+            return null;
         }
 
+        #region Invoke methods for UIThread
+
         /// <summary>
-        /// Handler for CollectionChanged in ObservableCollection in printers list
-        /// </summary>
-        /// <see cref="printers"/>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    Printer printer = e.NewItems[0] as Printer;
-                    ListViewItem item = new ListViewItem();
-                    item.Text = printer.Name;
-                    item.SubItems.Add(printer.Address.ToString());
-                    item.ImageIndex = (int)printer.Status;
-                    InvokeAddItems(item);
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                case NotifyCollectionChangedAction.Replace:
-                case NotifyCollectionChangedAction.Move:
-                case NotifyCollectionChangedAction.Reset:
-                    break;
-            }
-        }
-        
-        /// <summary>
-        /// Invoke in UIThread the lvwMain.Items.Add() method
+        /// Invoke in UIThread (if necessary) the lvwMain.Items.Add() method
         /// </summary>
         /// <param name="item">Add new item in printers list</param>
-        private void InvokeAddItems(ListViewItem item)
+        private void InvokeAddItem(ListViewItem item)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { this.InvokeAddItems(item); });
+                Invoke((MethodInvoker)delegate { this.InvokeAddItem(item); });
                 return;
             }
             lvwMain.Items.Add(item);
+        }
+
+        /// <summary>
+        /// Invoke in UIThread (if necessary) the lvwMain.Items.Remove() method
+        /// </summary>
+        /// <param name="item"></param>
+        private void InvokeRemoveItem(ListViewItem item)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { this.InvokeRemoveItem(item); });
+                return;
+            }
+            lvwMain.Items.Remove(item);
         }
 
         /// <summary>
@@ -126,6 +98,7 @@ namespace CLNPrintMonitor.Controller
                 if (item.SubItems[1].Text == printer.Address.ToString())
                 {
                     item.ImageIndex = (int)printer.Status;
+                    return;
                 }
             }
         }
@@ -155,7 +128,83 @@ namespace CLNPrintMonitor.Controller
                 }
             }
         }
-        
+
+        #endregion
+
+        #region Event handlers 
+
+        /// <summary>
+        /// Button click action
+        /// Include a new printer in the printers list
+        /// </summary>
+        /// <see cref="printers"/>
+        /// <see cref="Printer"/>
+        /// <param name="sender">Clicked button</param>
+        /// <param name="e">Click event arg</param>
+        private void BtnAddPrinterClickAsync(object sender, EventArgs e)
+        {
+            String strIp = tbxIpPrinter.Text;
+            String name = tbxNamePrinter.Text;
+            IPAddress ipv4;
+            if (strIp != String.Empty &&
+                name != String.Empty &&
+                IPAddress.TryParse(strIp, out ipv4))
+            {
+                new Task(async () =>
+                {
+                    Printer printer = new Printer(name, ipv4);
+                    this.printers.Add(printer);
+                    if (await printer.GetInformationFromDevice())
+                    {
+                        InvokeUpdateItem(printer);
+                    }
+                }).Start();
+            }
+            else
+            {
+                MessageBox.Show("O endereço IP deve seguir os padrões de formatação.", "Endereço IP inválido", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            tbxIpPrinter.Text = "";
+            tbxNamePrinter.Text = "";
+        }
+
+        /// <summary>
+        /// Handler for CollectionChanged in ObservableCollection in printers list
+        /// </summary>
+        /// <see cref="printers"/>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Printer printer = null;
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    printer = e.NewItems[0] as Printer;
+                    ListViewItem item = new ListViewItem();
+                    item.Text = printer.Name;
+                    item.SubItems.Add(printer.Address.ToString());
+                    item.ImageIndex = (int)printer.Status;
+                    InvokeAddItem(item);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    printer = e.OldItems[0] as Printer;
+                    for (int i = 0; i < this.lvwMain.Items.Count; i++)
+                    {
+                        if (this.lvwMain.Items[i].SubItems[1].Text == printer.Address.ToString())
+                        {
+                            InvokeRemoveItem(this.lvwMain.Items[i]);
+                            return;
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Reset:
+                    break;
+            }
+        }
+
         /// <summary>
         /// Every 30 seconds execute printer status update
         /// </summary>
@@ -165,7 +214,6 @@ namespace CLNPrintMonitor.Controller
         {
             new Task(async () =>
             {
-                
                 for (int i = 0; i < this.printers.Count; i++)
                 {
                     bool response = await this.printers[i].GetInformationFromDevice();
@@ -174,28 +222,89 @@ namespace CLNPrintMonitor.Controller
             }).Start();
         }
 
+        /// <summary>
+        /// Exits the application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TsmExitClick(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void NewPrinterForm(object sender, EventArgs e)
+        /// <summary>
+        /// Shows a new Form with all informations about the selected printer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowPrinterForm(object sender, EventArgs e)
         {
             ListView list = sender as ListView;
             ListViewItem clicked = list.SelectedItems[0];
-            Printer printer = null;
-            for (int i = 0; i < printers.Count; i++)
+            Printer printer = FindPrinter(clicked.SubItems[1].Text);
+            if(printer != null && printer.Status != StatusIcon.Offline)
             {
-                if(printers[i].Address.ToString() == clicked.SubItems[1].Text)
+                if(this.childrenForm == null || this.childrenForm.IsDisposed)
                 {
-                    printer = printers[i];
+                    this.childrenForm = new PrinterController(printer);
+                    this.childrenForm.Show();
+                } else
+                {
+                    this.childrenForm.UpdatePrinterReference(printer);
+                    this.childrenForm.BringToFront();
                 }
             }
-            if(printer != null)
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewItemRenameForm(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Shows a delete form for an specific printer 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewItemDeleteForm(object sender, EventArgs e)
+        {
+            Printer printer = this.FindPrinter(this.lvwMain.FocusedItem.SubItems[1].Text);
+            DialogResult result = MessageBox.Show(
+                "Deseja excluir a impressora " + printer.Address + "?",
+                printer.Name,
+                MessageBoxButtons.YesNo
+            );
+            switch (result)
             {
-                PrinterController form = new PrinterController(printer);
-                form.Show();
+                case DialogResult.Yes:
+                    this.printers.Remove(printer);
+                    break;
+                case DialogResult.No:
+                default:
+                    break;
             }
         }
+
+        /// <summary>
+        /// Shows a ContextMenuStrop for list view items
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListViewClickHandler(object sender, MouseEventArgs e)
+        {
+            MouseEventArgs me = (MouseEventArgs)e;
+            if (me.Button == MouseButtons.Right && this.lvwMain.FocusedItem.Bounds.Contains(me.Location))
+            {
+                cmsListViewItem.Show(Cursor.Position);
+            }
+        }
+
+        #endregion
+
     }
 }
