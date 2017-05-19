@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.btnAddPrinter = new System.Windows.Forms.Button();
             this.lvwMain = new System.Windows.Forms.ListView();
             this.clnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -53,6 +54,8 @@
             this.smiRename = new System.Windows.Forms.ToolStripMenuItem();
             this.sspDeleteSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.smiDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.nfiNotify = new System.Windows.Forms.NotifyIcon(this.components);
+            this.cmsNotify = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.groupBox1.SuspendLayout();
             this.mnsHeader.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -197,18 +200,18 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
             this.toolStripMenuItem1.Text = "Relatórios";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(123, 6);
             // 
             // tsmExit
             // 
             this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(152, 22);
+            this.tsmExit.Size = new System.Drawing.Size(126, 22);
             this.tsmExit.Text = "Sair";
             this.tsmExit.Click += new System.EventHandler(this.TsmExitClick);
             // 
@@ -232,26 +235,40 @@
             this.sspDeleteSeparator,
             this.smiDelete});
             this.cmsListViewItem.Name = "cmsListViewItem";
-            this.cmsListViewItem.Size = new System.Drawing.Size(153, 76);
+            this.cmsListViewItem.Size = new System.Drawing.Size(129, 54);
             // 
             // smiRename
             // 
             this.smiRename.Name = "smiRename";
-            this.smiRename.Size = new System.Drawing.Size(152, 22);
+            this.smiRename.Size = new System.Drawing.Size(128, 22);
             this.smiRename.Text = "Renomear";
             this.smiRename.Click += new System.EventHandler(this.NewItemRenameForm);
             // 
             // sspDeleteSeparator
             // 
             this.sspDeleteSeparator.Name = "sspDeleteSeparator";
-            this.sspDeleteSeparator.Size = new System.Drawing.Size(149, 6);
+            this.sspDeleteSeparator.Size = new System.Drawing.Size(125, 6);
             // 
             // smiDelete
             // 
             this.smiDelete.Name = "smiDelete";
-            this.smiDelete.Size = new System.Drawing.Size(152, 22);
+            this.smiDelete.Size = new System.Drawing.Size(128, 22);
             this.smiDelete.Text = "Excluir";
             this.smiDelete.Click += new System.EventHandler(this.NewItemDeleteForm);
+            // 
+            // nfiNotify
+            // 
+            this.nfiNotify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
+            this.nfiNotify.BalloonTipText = "Uma impressora necessita de atenção.";
+            this.nfiNotify.ContextMenuStrip = this.cmsNotify;
+            this.nfiNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("nfiNotify.Icon")));
+            this.nfiNotify.Text = "CLN Print Monitor";
+            this.nfiNotify.Click += new System.EventHandler(this.NotifyClick);
+            // 
+            // cmsNotify
+            // 
+            this.cmsNotify.Name = "cmsNotify";
+            this.cmsNotify.Size = new System.Drawing.Size(61, 4);
             // 
             // Main
             // 
@@ -267,6 +284,7 @@
             this.Name = "Main";
             this.Text = "CLNPrinterMonitor";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Resize += new System.EventHandler(this.MainResize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.mnsHeader.ResumeLayout(false);
@@ -303,6 +321,8 @@
         private System.Windows.Forms.ToolStripMenuItem smiRename;
         private System.Windows.Forms.ToolStripSeparator sspDeleteSeparator;
         private System.Windows.Forms.ToolStripMenuItem smiDelete;
+        private System.Windows.Forms.NotifyIcon nfiNotify;
+        private System.Windows.Forms.ContextMenuStrip cmsNotify;
     }
 }
 

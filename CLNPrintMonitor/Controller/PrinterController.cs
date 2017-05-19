@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using CLNPrintMonitor.Util;
 
 namespace CLNPrintMonitor.Controller
 {
@@ -64,6 +66,9 @@ namespace CLNPrintMonitor.Controller
             target.gpbOutput.Text = printer.DefaultOutput.Name;
             target.lblOuputCapacity.Text = "Capacidade de " + printer.DefaultOutput.Capacity.ToString() + " folhas";
             target.lblOuputStatus.Text = printer.DefaultOutput.Status;
+            target.SetProgressBarColor(pgbFc);
+            target.SetProgressBarColor(pgbInk);
+            target.SetProgressBarColor(pgbMaintenance);
         }
 
         public static Image GetStatusImage(StatusIcon icon)
@@ -95,5 +100,20 @@ namespace CLNPrintMonitor.Controller
             }
             return image;
         }
+
+        internal void SetProgressBarColor(ProgressBar pgb)
+        {
+            if(pgb.Value >= 60)
+            {
+                Helpers.ModifyProgressBarColor(pgb, 1);
+            } else if (pgb.Value <= 30)
+            {
+                Helpers.ModifyProgressBarColor(pgb, 2);
+            } else
+            {
+                Helpers.ModifyProgressBarColor(pgb, 3);
+            }
+        }
+        
     }
 }

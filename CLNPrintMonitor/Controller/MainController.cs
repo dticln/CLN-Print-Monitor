@@ -214,11 +214,14 @@ namespace CLNPrintMonitor.Controller
         {
             new Task(async () =>
             {
+                StatusIcon old;
                 for (int i = 0; i < this.printers.Count; i++)
                 {
+                    old = this.printers[i].Status;
                     bool response = await this.printers[i].GetInformationFromDevice();
+                    this.TrySendNotification(this.printers[i], old);
+                    InvokeUpdateItems();
                 }
-                InvokeUpdateItems();
             }).Start();
         }
 
@@ -306,5 +309,48 @@ namespace CLNPrintMonitor.Controller
 
         #endregion
 
+        private void MainResize(object sender, EventArgs e)
+        {
+            if(this.WindowState == FormWindowState.Minimized)
+            {
+                if(this.childrenForm != null && !this.childrenForm.IsDisposed)
+                {
+                    this.childrenForm.Close();
+                }
+                this.tmrRefresh.Interval = 60000;
+                this.Hide();
+                this.nfiNotify.Visible = true;
+            }
+        }
+
+        private void TrySendNotification(Printer printer, StatusIcon old)
+        {
+            if (this.WindowState == FormWindowState.Minimized && old != printer.Status)
+            {
+                switch (printer.Status)
+                {
+                    case StatusIcon.Ink0:
+                        this.nfiNotify.BalloonTipIcon = ToolTipIcon.Info;
+                        this.nfiNotify.BalloonTipTitle = "Aviso de toner";
+                        this.nfiNotify.BalloonTipText = "A impressora " + printer.Address + " está ficando sem toner.";
+                        this.nfiNotify.ShowBalloonTip(60);
+                        break;
+                    case StatusIcon.Error:
+                        this.nfiNotify.BalloonTipIcon = ToolTipIcon.Error;
+                        this.nfiNotify.BalloonTipTitle = "Problema em impressora";
+                        this.nfiNotify.BalloonTipText = "A impressora " + printer.Address + " necessita de atenção.";
+                        this.nfiNotify.ShowBalloonTip(60);
+                        break;
+                }
+            }
+        }
+
+        private void NotifyClick(object sender, EventArgs e)
+        {
+            this.tmrRefresh.Interval = 30000;
+            this.Show();
+            this.nfiNotify.Visible = false;
+            this.WindowState = FormWindowState.Maximized;
+        }
     }
 }
