@@ -36,6 +36,8 @@
             this.lblMaintenancePercent = new System.Windows.Forms.Label();
             this.lblFcPercent = new System.Windows.Forms.Label();
             this.lblInkPercent = new System.Windows.Forms.Label();
+            this.pgbMaintenance = new System.Windows.Forms.ProgressBar();
+            this.pgbFc = new System.Windows.Forms.ProgressBar();
             this.pgbInk = new System.Windows.Forms.ProgressBar();
             this.lblMaintenanceHeader = new System.Windows.Forms.Label();
             this.lblFcHeader = new System.Windows.Forms.Label();
@@ -60,8 +62,6 @@
             this.lblSupplyMfInputType = new System.Windows.Forms.Label();
             this.lblSupplyMfInputCapacity = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.pgbFc = new System.Windows.Forms.ProgressBar();
-            this.pgbMaintenance = new System.Windows.Forms.ProgressBar();
             this.gpbInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbStatus)).BeginInit();
             this.grbDefaultInput.SuspendLayout();
@@ -169,6 +169,22 @@
             this.lblInkPercent.TabIndex = 15;
             this.lblInkPercent.Text = "100%";
             this.lblInkPercent.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // pgbMaintenance
+            // 
+            this.pgbMaintenance.Location = new System.Drawing.Point(82, 247);
+            this.pgbMaintenance.MarqueeAnimationSpeed = 0;
+            this.pgbMaintenance.Name = "pgbMaintenance";
+            this.pgbMaintenance.Size = new System.Drawing.Size(315, 23);
+            this.pgbMaintenance.TabIndex = 12;
+            // 
+            // pgbFc
+            // 
+            this.pgbFc.Location = new System.Drawing.Point(82, 218);
+            this.pgbFc.MarqueeAnimationSpeed = 0;
+            this.pgbFc.Name = "pgbFc";
+            this.pgbFc.Size = new System.Drawing.Size(315, 23);
+            this.pgbFc.TabIndex = 12;
             // 
             // pgbInk
             // 
@@ -427,22 +443,6 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "Gerar relatório";
             this.button1.UseVisualStyleBackColor = true;
-            // 
-            // pgbFc
-            // 
-            this.pgbFc.Location = new System.Drawing.Point(82, 218);
-            this.pgbFc.MarqueeAnimationSpeed = 0;
-            this.pgbFc.Name = "pgbFc";
-            this.pgbFc.Size = new System.Drawing.Size(315, 23);
-            this.pgbFc.TabIndex = 12;
-            // 
-            // pgbMaintenance
-            // 
-            this.pgbMaintenance.Location = new System.Drawing.Point(82, 247);
-            this.pgbMaintenance.MarqueeAnimationSpeed = 0;
-            this.pgbMaintenance.Name = "pgbMaintenance";
-            this.pgbMaintenance.Size = new System.Drawing.Size(315, 23);
-            this.pgbMaintenance.TabIndex = 12;
             // 
             // PrinterController
             // 

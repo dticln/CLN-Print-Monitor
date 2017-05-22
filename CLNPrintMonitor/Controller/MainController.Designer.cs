@@ -34,9 +34,6 @@
             this.lvwMain = new System.Windows.Forms.ListView();
             this.clnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.clnIpv4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clnFC = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clnManutencao = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbxNamePrinter = new System.Windows.Forms.TextBox();
             this.tbxIpPrinter = new System.Windows.Forms.TextBox();
@@ -49,6 +46,9 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmUpdateList = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmUpdateStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cmsListViewItem = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.smiRename = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,10 +79,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvwMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.clnName,
-            this.clnIpv4,
-            this.clnStatus,
-            this.clnFC,
-            this.clnManutencao});
+            this.clnIpv4});
             this.lvwMain.Location = new System.Drawing.Point(6, 19);
             this.lvwMain.Name = "lvwMain";
             this.lvwMain.Size = new System.Drawing.Size(545, 230);
@@ -102,18 +99,6 @@
             // 
             this.clnIpv4.Text = "IP";
             this.clnIpv4.Width = 126;
-            // 
-            // clnStatus
-            // 
-            this.clnStatus.Text = "Status";
-            // 
-            // clnFC
-            // 
-            this.clnFC.Text = "FC";
-            // 
-            // clnManutencao
-            // 
-            this.clnManutencao.Text = "Manutenção";
             // 
             // groupBox1
             // 
@@ -180,7 +165,8 @@
             // mnsHeader
             // 
             this.mnsHeader.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuToolStripMenuItem});
+            this.menuToolStripMenuItem,
+            this.tsmUpdate});
             this.mnsHeader.Location = new System.Drawing.Point(0, 0);
             this.mnsHeader.Name = "mnsHeader";
             this.mnsHeader.Size = new System.Drawing.Size(584, 24);
@@ -201,7 +187,7 @@
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
-            this.toolStripMenuItem1.Text = "Relatórios";
+            this.toolStripMenuItem1.Text = "&Relatórios";
             // 
             // toolStripSeparator1
             // 
@@ -212,8 +198,31 @@
             // 
             this.tsmExit.Name = "tsmExit";
             this.tsmExit.Size = new System.Drawing.Size(126, 22);
-            this.tsmExit.Text = "Sair";
+            this.tsmExit.Text = "&Sair";
             this.tsmExit.Click += new System.EventHandler(this.TsmExitClick);
+            // 
+            // tsmUpdate
+            // 
+            this.tsmUpdate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmUpdateStatus,
+            this.tsmUpdateList});
+            this.tsmUpdate.Name = "tsmUpdate";
+            this.tsmUpdate.Size = new System.Drawing.Size(65, 20);
+            this.tsmUpdate.Text = "Atualizar";
+            // 
+            // tsmUpdateList
+            // 
+            this.tsmUpdateList.Name = "tsmUpdateList";
+            this.tsmUpdateList.Size = new System.Drawing.Size(180, 22);
+            this.tsmUpdateList.Text = "Lista de impressoras";
+            this.tsmUpdateList.Click += new System.EventHandler(this.UpdatePrinterList);
+            // 
+            // tsmUpdateStatus
+            // 
+            this.tsmUpdateStatus.Name = "tsmUpdateStatus";
+            this.tsmUpdateStatus.Size = new System.Drawing.Size(180, 22);
+            this.tsmUpdateStatus.Text = "Status";
+            this.tsmUpdateStatus.Click += new System.EventHandler(this.UpdatePrinterStatus);
             // 
             // groupBox2
             // 
@@ -301,12 +310,9 @@
         private System.Windows.Forms.ListView lvwMain;
         private System.Windows.Forms.ColumnHeader clnName;
         private System.Windows.Forms.ColumnHeader clnIpv4;
-        private System.Windows.Forms.ColumnHeader clnStatus;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbxIpPrinter;
         private System.Windows.Forms.StatusStrip stsFooter;
-        private System.Windows.Forms.ColumnHeader clnFC;
-        private System.Windows.Forms.ColumnHeader clnManutencao;
         private System.Windows.Forms.Timer tmrRefresh;
         private System.Windows.Forms.TextBox tbxNamePrinter;
         private System.Windows.Forms.Label label2;
@@ -323,6 +329,9 @@
         private System.Windows.Forms.ToolStripMenuItem smiDelete;
         private System.Windows.Forms.NotifyIcon nfiNotify;
         private System.Windows.Forms.ContextMenuStrip cmsNotify;
+        private System.Windows.Forms.ToolStripMenuItem tsmUpdate;
+        private System.Windows.Forms.ToolStripMenuItem tsmUpdateList;
+        private System.Windows.Forms.ToolStripMenuItem tsmUpdateStatus;
     }
 }
 

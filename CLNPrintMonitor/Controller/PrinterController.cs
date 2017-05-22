@@ -16,14 +16,23 @@ namespace CLNPrintMonitor.Controller
 {
     public partial class PrinterController : Form
     {
+
         private Printer printer;
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="printer"></param>
         public PrinterController(Printer printer)
         {
             InitializeComponent();
             this.UpdatePrinterReference(printer);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="printer"></param>
         public void UpdatePrinterReference(Printer printer)
         {
             this.printer = printer;
@@ -32,6 +41,10 @@ namespace CLNPrintMonitor.Controller
             this.printer.UpdateUIInformation(this);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
         public void InvokeUpdateUI(PrinterController target)
         {
             if (InvokeRequired)
@@ -71,6 +84,11 @@ namespace CLNPrintMonitor.Controller
             target.SetProgressBarColor(pgbMaintenance);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="icon"></param>
+        /// <returns></returns>
         public static Image GetStatusImage(StatusIcon icon)
         {
             Image image = null;
@@ -101,6 +119,10 @@ namespace CLNPrintMonitor.Controller
             return image;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pgb"></param>
         internal void SetProgressBarColor(ProgressBar pgb)
         {
             if(pgb.Value >= 60)

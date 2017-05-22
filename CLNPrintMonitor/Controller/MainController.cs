@@ -1,6 +1,9 @@
 ﻿using CLNPrintMonitor.Model;
+using CLNPrintMonitor.Persistence;
 using CLNPrintMonitor.Properties;
+using CLNPrintMonitor.Util;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Drawing;
@@ -36,18 +39,7 @@ namespace CLNPrintMonitor.Controller
                 (Image)Resources.ResourceManager.GetObject("error")
             };
             this.lvwMain.LargeImageList.Images.AddRange(range);
-        }
-
-        private Printer FindPrinter(string Ip)
-        {
-            for (int i = 0; i < this.printers.Count; i++)
-            {
-                if (this.printers[i].Address.ToString() == Ip)
-                {
-                    return this.printers[i];
-                }
-            }
-            return null;
+            this.GetPrintersFromRemote();
         }
 
         #region Invoke methods for UIThread
@@ -98,6 +90,8 @@ namespace CLNPrintMonitor.Controller
                 if (item.SubItems[1].Text == printer.Address.ToString())
                 {
                     item.ImageIndex = (int)printer.Status;
+                    item.Text = printer.Name;
+                    item.SubItems[1].Text = printer.Address.ToString();
                     return;
                 }
             }
@@ -106,6 +100,7 @@ namespace CLNPrintMonitor.Controller
         /// <summary>
         /// Change all items Text in UIThread
         /// using a printers list
+        /// DEPRECATED
         /// </summary>
         private void InvokeUpdateItems()
         {
@@ -129,12 +124,25 @@ namespace CLNPrintMonitor.Controller
             }
         }
 
+        /// <summary>
+        /// Delete all items in UIThread
+        /// </summary>
+        private void InvokeClearItems()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { this.InvokeClearItems(); });
+                return;
+            }
+            this.lvwMain.Clear();
+        }
+
         #endregion
 
         #region Event handlers 
 
         /// <summary>
-        /// Button click action
+        /// Button click handler
         /// Include a new printer in the printers list
         /// </summary>
         /// <see cref="printers"/>
@@ -181,9 +189,10 @@ namespace CLNPrintMonitor.Controller
             {
                 case NotifyCollectionChangedAction.Add:
                     printer = e.NewItems[0] as Printer;
-                    ListViewItem item = new ListViewItem();
-                    item.Text = printer.Name;
-                    item.SubItems.Add(printer.Address.ToString());
+                    ListViewItem item = new ListViewItem(new string[] {
+                        printer.Name,
+                        printer.Address.ToString()
+                    });
                     item.ImageIndex = (int)printer.Status;
                     InvokeAddItem(item);
                     break;
@@ -201,28 +210,23 @@ namespace CLNPrintMonitor.Controller
                 case NotifyCollectionChangedAction.Replace:
                 case NotifyCollectionChangedAction.Move:
                 case NotifyCollectionChangedAction.Reset:
+                    InvokeClearItems();
                     break;
             }
         }
 
         /// <summary>
         /// Every 30 seconds execute printer status update
+        /// Timer handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TmrRefreshTick(object sender, EventArgs e)
         {
-            new Task(async () =>
+            foreach (Printer printer in this.printers)
             {
-                StatusIcon old;
-                for (int i = 0; i < this.printers.Count; i++)
-                {
-                    old = this.printers[i].Status;
-                    bool response = await this.printers[i].GetInformationFromDevice();
-                    this.TrySendNotification(this.printers[i], old);
-                    InvokeUpdateItems();
-                }
-            }).Start();
+                new Task(() => this.VerifyPrinter(printer)).Start();
+            }
         }
 
         /// <summary>
@@ -237,6 +241,7 @@ namespace CLNPrintMonitor.Controller
 
         /// <summary>
         /// Shows a new Form with all informations about the selected printer
+        /// Click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -244,7 +249,7 @@ namespace CLNPrintMonitor.Controller
         {
             ListView list = sender as ListView;
             ListViewItem clicked = list.SelectedItems[0];
-            Printer printer = FindPrinter(clicked.SubItems[1].Text);
+            Printer printer = Helpers.FindPrinter(this.printers, clicked.SubItems[1].Text);
             if(printer != null && printer.Status != StatusIcon.Offline)
             {
                 if(this.childrenForm == null || this.childrenForm.IsDisposed)
@@ -271,12 +276,13 @@ namespace CLNPrintMonitor.Controller
 
         /// <summary>
         /// Shows a delete form for an specific printer 
+        /// Click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NewItemDeleteForm(object sender, EventArgs e)
         {
-            Printer printer = this.FindPrinter(this.lvwMain.FocusedItem.SubItems[1].Text);
+            Printer printer = Helpers.FindPrinter(this.printers, this.lvwMain.FocusedItem.SubItems[1].Text);
             DialogResult result = MessageBox.Show(
                 "Deseja excluir a impressora " + printer.Address + "?",
                 printer.Name,
@@ -307,8 +313,11 @@ namespace CLNPrintMonitor.Controller
             }
         }
 
-        #endregion
-
+        /// <summary>
+        /// Resize event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainResize(object sender, EventArgs e)
         {
             if(this.WindowState == FormWindowState.Minimized)
@@ -323,6 +332,75 @@ namespace CLNPrintMonitor.Controller
             }
         }
 
+        /// <summary>
+        /// NotifyIcon click handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NotifyClick(object sender, EventArgs e)
+        {
+            this.tmrRefresh.Interval = 30000;
+            this.Show();
+            this.nfiNotify.Visible = false;
+            this.WindowState = FormWindowState.Maximized;
+        }
+
+        /// <summary>
+        /// Menu "update printer status" item handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpdatePrinterStatus(object sender, EventArgs e)
+        {
+            TmrRefreshTick(null, null);
+        }
+
+        /// <summary>
+        /// Menu "update printer list" item handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpdatePrinterList(object sender, EventArgs e)
+        {
+            GetPrintersFromRemote();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="printer"></param>
+        private async void VerifyPrinter(Printer printer)
+        {
+            StatusIcon old = printer.Status;
+            bool response = await printer.GetInformationFromDevice();
+            this.TrySendNotification(printer, old);
+            InvokeUpdateItem(printer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void GetPrintersFromRemote()
+        {
+            new Task(async () =>
+            {
+                printers.Clear();
+                Repository rep = Repository.GetInstance;
+                List<Printer> list = await rep.GetDataFromRemote();
+                foreach (var item in list)
+                {
+                    printers.Add(item);
+                }
+            }).Start();
+        }
+
+        /// <summary>
+        /// Send notification in NotifyIcon
+        /// </summary>
+        /// <param name="printer"></param>
+        /// <param name="old"></param>
         private void TrySendNotification(Printer printer, StatusIcon old)
         {
             if (this.WindowState == FormWindowState.Minimized && old != printer.Status)
@@ -345,12 +423,5 @@ namespace CLNPrintMonitor.Controller
             }
         }
 
-        private void NotifyClick(object sender, EventArgs e)
-        {
-            this.tmrRefresh.Interval = 30000;
-            this.Show();
-            this.nfiNotify.Visible = false;
-            this.WindowState = FormWindowState.Maximized;
-        }
     }
 }

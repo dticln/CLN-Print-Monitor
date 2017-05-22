@@ -154,8 +154,8 @@ namespace CLNPrintMonitor.Model
 
             try
             {
-                bufferInfo = await this.SendHttpRequest(Printer.HTTP + this.address + Printer.TOPBAR_URI);
-                bufferStatus = await this.SendHttpRequest(Printer.HTTP + this.address + Printer.STATUS_URI);
+                bufferInfo = await Helpers.SendHttpRequest(Printer.HTTP + this.address + Printer.TOPBAR_URI);
+                bufferStatus = await Helpers.SendHttpRequest(Printer.HTTP + this.address + Printer.STATUS_URI);
             }
             catch (Exception)
             {
@@ -171,22 +171,6 @@ namespace CLNPrintMonitor.Model
             return this.SetInformations(list);
         }
 
-        /// <summary>
-        /// Send a asynchronous request and retrives the response data
-        /// </summary>
-        /// <param name="url">Target url</param>
-        /// <returns>Page data</returns>
-        private async Task<string> SendHttpRequest(string url)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = WebRequestMethods.Http.Get;
-            request.Timeout = 20000;
-            request.Proxy = null;
-            WebResponse response = await request.GetResponseAsync();
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            return reader.ReadToEnd();
-        }
 
         /// <summary>
         /// Remove warnings strings from attributes list
