@@ -153,18 +153,18 @@ namespace CLNPrintMonitor.Controller
         {
             String strIp = tbxIpPrinter.Text;
             String name = tbxNamePrinter.Text;
-            IPAddress ipv4;
-            if (strIp != String.Empty &&
-                name != String.Empty &&
-                IPAddress.TryParse(strIp, out ipv4))
+            if (strIp != String.Empty && name != String.Empty && IPAddress.TryParse(strIp, out IPAddress ipv4))
             {
                 new Task(async () =>
                 {
                     Printer printer = new Printer(name, ipv4);
-                    this.printers.Add(printer);
-                    if (await printer.GetInformationFromDevice())
+                    if (await Repository.GetInstance.Add(printer))
                     {
-                        InvokeUpdateItem(printer);
+                        this.printers.Add(printer);
+                        if (await printer.GetInformationFromDevice())
+                        {
+                            InvokeUpdateItem(printer);
+                        }
                     }
                 }).Start();
             }
@@ -388,7 +388,7 @@ namespace CLNPrintMonitor.Controller
             {
                 printers.Clear();
                 Repository rep = Repository.GetInstance;
-                List<Printer> list = await rep.GetDataFromRemote();
+                List<Printer> list = await rep.SelectAll();
                 foreach (var item in list)
                 {
                     printers.Add(item);

@@ -1,12 +1,15 @@
 ﻿using CLNPrintMonitor.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text;
 
 namespace CLNPrintMonitor.Util
 {
@@ -67,11 +70,35 @@ namespace CLNPrintMonitor.Util
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.UserAgent = "CLNPrinterMonitor Agent " + Application.ProductVersion; 
             request.Method = WebRequestMethods.Http.Get;
-            //request.ContentType = "text/plain;charset=utf-8";
             request.Timeout = 20000;
             request.Proxy = null;
             WebResponse response = await request.GetResponseAsync();
             Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            return reader.ReadToEnd();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static async Task<string> SendHttpPostRequest(string url, Dictionary<string,string> param)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = WebRequestMethods.Http.Post;
+            string postParam = Helpers.DictionaryToString(param);
+            byte[] byteArray = Encoding.UTF8.GetBytes(postParam);
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = byteArray.Length;
+            request.UserAgent = "CLNPrinterMonitor Agent " + Application.ProductVersion;
+            Stream dataStream = await request.GetRequestStreamAsync();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+            WebResponse response = request.GetResponse();
+
+            dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             return reader.ReadToEnd();
         }
@@ -94,6 +121,21 @@ namespace CLNPrintMonitor.Util
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        private static string DictionaryToString(Dictionary<string, string> dict)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (KeyValuePair<string, string> kvp in dict)
+            {
+                builder.Append(kvp.Key + "=" + kvp.Value + "&");
+            }
+            return builder.ToString();
+        }
+
     }
 
     internal static class NativeMethods
@@ -101,5 +143,6 @@ namespace CLNPrintMonitor.Util
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
         internal static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr w, IntPtr l);
     }
+
 }
 
