@@ -185,7 +185,7 @@ namespace CLNPrintMonitor.Persistence
             {
                 Dictionary<string, string> param = new Dictionary<string, string>();
                 param.Add("printer_ipv4", ip);
-                string response = await this.Api(APICommand.Create, param);
+                string response = await this.Api(APICommand.Delete, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
                 if (json.Property("response").Value.ToString() == "success")
                 {

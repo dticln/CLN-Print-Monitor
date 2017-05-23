@@ -48,6 +48,8 @@ namespace UnitCLNPrintMonitor
                 return await RepositoryTest.Rep.Select(RepositoryTest.Ipv4);
             }).GetAwaiter().GetResult();
             Assert.AreEqual(printer.Name, "UnitTest");
+            Console.WriteLine("Nome da impressora: " + printer.Name);
+            Console.WriteLine("Endereço da impressora: " + printer.Address);
         }
 
         [TestMethod]
@@ -58,6 +60,7 @@ namespace UnitCLNPrintMonitor
                 return await RepositoryTest.Rep.SelectId(RepositoryTest.Ipv4);
             }).GetAwaiter().GetResult();
             Assert.AreNotSame(0, id);
+            Console.WriteLine("Id recuperado: " + id);
         }
 
         [TestMethod]
@@ -67,6 +70,11 @@ namespace UnitCLNPrintMonitor
                 return await RepositoryTest.Rep.SelectAll();
             }).GetAwaiter().GetResult();
             Assert.IsNotNull(printers);
+            foreach(Printer printer in printers)
+            {
+                Console.WriteLine("Nome da impressora: " + printer.Name);
+                Console.WriteLine("Endereço da impressora: " + printer.Address);
+            }
         }
 
         [TestMethod]
