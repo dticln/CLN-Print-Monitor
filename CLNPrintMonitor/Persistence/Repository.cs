@@ -48,9 +48,11 @@ namespace CLNPrintMonitor.Persistence
         {
             try
             {
-                Dictionary<string,string> param = new Dictionary<string, string>();
-                param.Add("printer_ipv4", printer.Address.ToString());
-                param.Add("printer_name", printer.Name);
+                Dictionary<string, string> param = new Dictionary<string, string>
+                {
+                    { "printer_ipv4", printer.Address.ToString() },
+                    { "printer_name", printer.Name }
+                };
                 string response = await this.Api(APICommand.Create, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
                 if(json.Property("response").Value.ToString() == "success")
@@ -74,8 +76,10 @@ namespace CLNPrintMonitor.Persistence
             Printer printer;
             try
             {
-                Dictionary<string, string> param = new Dictionary<string, string>();
-                param.Add("printer_ipv4", ip);
+                Dictionary<string, string> param = new Dictionary<string, string>
+                {
+                    { "printer_ipv4", ip }
+                };
                 string response = await this.Api(APICommand.Read, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
                 if (json.Property("response").Value.ToString() == "success")
@@ -103,8 +107,10 @@ namespace CLNPrintMonitor.Persistence
         {
             try
             {
-                Dictionary<string, string> param = new Dictionary<string, string>();
-                param.Add("printer_ipv4", ip);
+                Dictionary<string, string> param = new Dictionary<string, string>
+                {
+                    { "printer_ipv4", ip }
+                };
                 string response = await this.Api(APICommand.Read, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
                 if (json.Property("response").Value.ToString() == "success")
@@ -156,10 +162,12 @@ namespace CLNPrintMonitor.Persistence
         {
             try
             {
-                Dictionary<string, string> param = new Dictionary<string, string>();
-                param.Add("printer_ipv4", printer.Address.ToString());
-                param.Add("printer_name", printer.Name);
-                param.Add("printer_id", id.ToString());
+                Dictionary<string, string> param = new Dictionary<string, string>
+                {
+                    { "printer_ipv4", printer.Address.ToString() },
+                    { "printer_name", printer.Name },
+                    { "printer_id", id.ToString() }
+                };
                 string response = await this.Api(APICommand.Update, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
                 if (json.Property("response").Value.ToString() == "success")
@@ -183,8 +191,10 @@ namespace CLNPrintMonitor.Persistence
         {
             try
             {
-                Dictionary<string, string> param = new Dictionary<string, string>();
-                param.Add("printer_ipv4", ip);
+                Dictionary<string, string> param = new Dictionary<string, string>
+                {
+                    { "printer_ipv4", ip }
+                };
                 string response = await this.Api(APICommand.Delete, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
                 if (json.Property("response").Value.ToString() == "success")

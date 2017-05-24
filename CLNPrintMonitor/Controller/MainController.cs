@@ -27,18 +27,19 @@ namespace CLNPrintMonitor.Controller
             InitializeComponent();
             this.printers = new ObservableCollection<Printer>();
             this.printers.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
-            this.lvwMain.LargeImageList = new ImageList();
-            this.lvwMain.LargeImageList.ImageSize = new Size(150, 150);
-            Image[] range = {
-                (Image)Resources.ResourceManager.GetObject("ink0"),
-                (Image)Resources.ResourceManager.GetObject("ink30"),
-                (Image)Resources.ResourceManager.GetObject("ink60"),
-                (Image)Resources.ResourceManager.GetObject("ink90"),
-                (Image)Resources.ResourceManager.GetObject("ink100"),
-                (Image)Resources.ResourceManager.GetObject("offline"),
-                (Image)Resources.ResourceManager.GetObject("error")
+            this.lvwMain.LargeImageList = new ImageList()
+            {
+                ImageSize = new Size(150, 150),
+                Images = {
+                    (Image)Resources.ResourceManager.GetObject("ink0"),
+                    (Image)Resources.ResourceManager.GetObject("ink30"),
+                    (Image)Resources.ResourceManager.GetObject("ink60"),
+                    (Image)Resources.ResourceManager.GetObject("ink90"),
+                    (Image)Resources.ResourceManager.GetObject("ink100"),
+                    (Image)Resources.ResourceManager.GetObject("offline"),
+                    (Image)Resources.ResourceManager.GetObject("error")
+                }
             };
-            this.lvwMain.LargeImageList.Images.AddRange(range);
             this.GetPrintersFromRemote();
         }
 
@@ -149,7 +150,7 @@ namespace CLNPrintMonitor.Controller
         /// <see cref="Printer"/>
         /// <param name="sender">Clicked button</param>
         /// <param name="e">Click event arg</param>
-        private void BtnAddPrinterClickAsync(object sender, EventArgs e)
+        private void AddPrinter(object sender, EventArgs e)
         {
             String strIp = tbxIpPrinter.Text;
             String name = tbxNamePrinter.Text;
@@ -192,8 +193,10 @@ namespace CLNPrintMonitor.Controller
                     ListViewItem item = new ListViewItem(new string[] {
                         printer.Name,
                         printer.Address.ToString()
-                    });
-                    item.ImageIndex = (int)printer.Status;
+                    })
+                    {
+                        ImageIndex = (int)printer.Status
+                    };
                     InvokeAddItem(item);
                     break;
                 case NotifyCollectionChangedAction.Remove:
@@ -221,7 +224,7 @@ namespace CLNPrintMonitor.Controller
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TmrRefreshTick(object sender, EventArgs e)
+        private void RefreshTick(object sender, EventArgs e)
         {
             foreach (Printer printer in this.printers)
             {
@@ -234,7 +237,7 @@ namespace CLNPrintMonitor.Controller
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TsmExitClick(object sender, EventArgs e)
+        private void ExitClick(object sender, EventArgs e)
         {
             Application.Exit();
         }
@@ -352,7 +355,7 @@ namespace CLNPrintMonitor.Controller
         /// <param name="e"></param>
         private void UpdatePrinterStatus(object sender, EventArgs e)
         {
-            TmrRefreshTick(null, null);
+            RefreshTick(null, null);
         }
 
         /// <summary>

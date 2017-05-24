@@ -70,7 +70,7 @@
             this.btnAddPrinter.TabIndex = 1;
             this.btnAddPrinter.Text = "Adicionar";
             this.btnAddPrinter.UseVisualStyleBackColor = true;
-            this.btnAddPrinter.Click += new System.EventHandler(this.BtnAddPrinterClickAsync);
+            this.btnAddPrinter.Click += new System.EventHandler(this.AddPrinter);
             // 
             // lvwMain
             // 
@@ -160,7 +160,7 @@
             // 
             this.tmrRefresh.Enabled = true;
             this.tmrRefresh.Interval = 5000;
-            this.tmrRefresh.Tick += new System.EventHandler(this.TmrRefreshTick);
+            this.tmrRefresh.Tick += new System.EventHandler(this.RefreshTick);
             // 
             // mnsHeader
             // 
@@ -199,7 +199,7 @@
             this.tsmExit.Name = "tsmExit";
             this.tsmExit.Size = new System.Drawing.Size(126, 22);
             this.tsmExit.Text = "&Sair";
-            this.tsmExit.Click += new System.EventHandler(this.TsmExitClick);
+            this.tsmExit.Click += new System.EventHandler(this.ExitClick);
             // 
             // tsmUpdate
             // 
