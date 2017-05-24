@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text;
+using CLNPrintMonitor.Properties;
 
 namespace CLNPrintMonitor.Util
 {
@@ -68,7 +69,7 @@ namespace CLNPrintMonitor.Util
         public static async Task<string> SendHttpRequest(string url)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.UserAgent = "CLNPrinterMonitor Agent " + Application.ProductVersion; 
+            request.UserAgent = Resources.MonitorAgent + Application.ProductVersion; 
             request.Method = WebRequestMethods.Http.Get;
             request.Timeout = 20000;
             request.Proxy = null;
@@ -92,7 +93,7 @@ namespace CLNPrintMonitor.Util
             byte[] byteArray = Encoding.UTF8.GetBytes(postParam);
             request.ContentType = "application/x-www-form-urlencoded";
             request.ContentLength = byteArray.Length;
-            request.UserAgent = "CLNPrinterMonitor Agent " + Application.ProductVersion;
+            request.UserAgent = Resources.MonitorAgent + Application.ProductVersion;
             Stream dataStream = await request.GetRequestStreamAsync();
             dataStream.Write(byteArray, 0, byteArray.Length);
             dataStream.Close();

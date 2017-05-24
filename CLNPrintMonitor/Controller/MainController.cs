@@ -26,6 +26,7 @@ namespace CLNPrintMonitor.Controller
         {
             InitializeComponent();
             this.printers = new ObservableCollection<Printer>();
+            Repository.GetInstance.ConnectionErroHandler += new Repository.ConnectionErrorUIHandler(ConnectionErrorMessage);
             this.printers.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
             this.lvwMain.LargeImageList = new ImageList()
             {
@@ -63,14 +64,21 @@ namespace CLNPrintMonitor.Controller
         /// Invoke in UIThread (if necessary) the lvwMain.Items.Remove() method
         /// </summary>
         /// <param name="item"></param>
-        private void InvokeRemoveItem(ListViewItem item)
+        private void InvokeRemoveItemWith(string ip)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { this.InvokeRemoveItem(item); });
+                Invoke((MethodInvoker)delegate { this.InvokeRemoveItemWith(ip); });
                 return;
             }
-            lvwMain.Items.Remove(item);
+            for (int i = 0; i < this.lvwMain.Items.Count; i++)
+            {
+                if (this.lvwMain.Items[i].SubItems[1].Text == ip)
+                {
+                    lvwMain.Items.Remove(this.lvwMain.Items[i]);
+                    return;
+                }
+            }
         }
 
         /// <summary>
@@ -78,7 +86,7 @@ namespace CLNPrintMonitor.Controller
         /// searching for the target item by IPV4 address in printer object
         /// </summary>
         /// <param name="printer">New printer informations</param>
-        private void InvokeUpdateItem(Printer printer)
+        public void InvokeUpdateItem(Printer printer)
         {
             if (InvokeRequired)
             {
@@ -119,7 +127,9 @@ namespace CLNPrintMonitor.Controller
                     if (item.SubItems[1].Text == current.Address.ToString())
                     {
                         item.ImageIndex = (int)current.Status;
-                        Console.WriteLine("Impressora " + current.Address.ToString() + " está sendo atualizada");
+                        #if DEBUG
+                            Console.WriteLine("Impressora " + current.Address.ToString() + " está sendo atualizada");
+                        #endif
                     }
                 }
             }
@@ -138,9 +148,9 @@ namespace CLNPrintMonitor.Controller
             this.lvwMain.Clear();
         }
 
-        #endregion
+#endregion
 
-        #region Event handlers 
+#region Event handlers 
 
         /// <summary>
         /// Button click handler
@@ -171,7 +181,7 @@ namespace CLNPrintMonitor.Controller
             }
             else
             {
-                MessageBox.Show("O endereço IP deve seguir os padrões de formatação.", "Endereço IP inválido", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.IpErrorBody, Resources.IpErrorHeader, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             tbxIpPrinter.Text = "";
             tbxNamePrinter.Text = "";
@@ -201,14 +211,7 @@ namespace CLNPrintMonitor.Controller
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     printer = e.OldItems[0] as Printer;
-                    for (int i = 0; i < this.lvwMain.Items.Count; i++)
-                    {
-                        if (this.lvwMain.Items[i].SubItems[1].Text == printer.Address.ToString())
-                        {
-                            InvokeRemoveItem(this.lvwMain.Items[i]);
-                            return;
-                        }
-                    }
+                    InvokeRemoveItemWith(printer.Address.ToString());
                     break;
                 case NotifyCollectionChangedAction.Replace:
                 case NotifyCollectionChangedAction.Move:
@@ -216,6 +219,14 @@ namespace CLNPrintMonitor.Controller
                     InvokeClearItems();
                     break;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ConnectionErrorMessage()
+        {
+            MessageBox.Show(Resources.ConnectionErrorBody, Resources.ConnectionErrorHeader, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
         }
 
         /// <summary>
@@ -230,6 +241,7 @@ namespace CLNPrintMonitor.Controller
             {
                 new Task(() => this.VerifyPrinter(printer)).Start();
             }
+
         }
 
         /// <summary>
@@ -272,9 +284,11 @@ namespace CLNPrintMonitor.Controller
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NewItemRenameForm(object sender, EventArgs e)
+        private void NewRenameForm(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Printer printer = Helpers.FindPrinter(this.printers, this.lvwMain.FocusedItem.SubItems[1].Text);
+            RenameController rename = new RenameController(this,printer);
+            rename.ShowDialog();
         }
 
         /// <summary>
@@ -283,18 +297,23 @@ namespace CLNPrintMonitor.Controller
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NewItemDeleteForm(object sender, EventArgs e)
+        private void NewDeleteForm(object sender, EventArgs e)
         {
             Printer printer = Helpers.FindPrinter(this.printers, this.lvwMain.FocusedItem.SubItems[1].Text);
             DialogResult result = MessageBox.Show(
-                "Deseja excluir a impressora " + printer.Address + "?",
+                Resources.DeleteFormBody + printer.Address + "?",
                 printer.Name,
                 MessageBoxButtons.YesNo
             );
             switch (result)
             {
                 case DialogResult.Yes:
-                    this.printers.Remove(printer);
+                    new Task(async () => {
+                        if (await Repository.GetInstance.Remove(printer.Address.ToString()))
+                        {
+                            InvokeRemoveItemWith(printer.Address.ToString());
+                        }
+                    }).Start();
                     break;
                 case DialogResult.No:
                 default:
@@ -310,7 +329,7 @@ namespace CLNPrintMonitor.Controller
         private void ListViewClickHandler(object sender, MouseEventArgs e)
         {
             MouseEventArgs me = (MouseEventArgs)e;
-            if (me.Button == MouseButtons.Right && this.lvwMain.FocusedItem.Bounds.Contains(me.Location))
+            if (me != null && me.Button == MouseButtons.Right && this.lvwMain.FocusedItem.Bounds.Contains(me.Location))
             {
                 cmsListViewItem.Show(Cursor.Position);
             }
@@ -368,8 +387,8 @@ namespace CLNPrintMonitor.Controller
             GetPrintersFromRemote();
         }
 
-        #endregion
-
+#endregion
+        
         /// <summary>
         /// 
         /// </summary>
@@ -412,19 +431,19 @@ namespace CLNPrintMonitor.Controller
                 {
                     case StatusIcon.Ink0:
                         this.nfiNotify.BalloonTipIcon = ToolTipIcon.Info;
-                        this.nfiNotify.BalloonTipTitle = "Aviso de toner";
-                        this.nfiNotify.BalloonTipText = "A impressora " + printer.Address + " está ficando sem toner.";
+                        this.nfiNotify.BalloonTipTitle = Resources.TonerWarning;
+                        this.nfiNotify.BalloonTipText = Resources.NotifyIconText + printer.Address + Resources.NotifyIconNoToner;
                         this.nfiNotify.ShowBalloonTip(60);
                         break;
                     case StatusIcon.Error:
                         this.nfiNotify.BalloonTipIcon = ToolTipIcon.Error;
-                        this.nfiNotify.BalloonTipTitle = "Problema em impressora";
-                        this.nfiNotify.BalloonTipText = "A impressora " + printer.Address + " necessita de atenção.";
+                        this.nfiNotify.BalloonTipTitle = Resources.TonerProblem;
+                        this.nfiNotify.BalloonTipText = Resources.NotifyIconText + printer.Address + Resources.TonerProblem;
                         this.nfiNotify.ShowBalloonTip(60);
                         break;
                 }
             }
         }
-
+        
     }
 }

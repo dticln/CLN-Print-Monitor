@@ -47,8 +47,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmUpdate = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmUpdateList = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmUpdateStatus = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmUpdateList = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cmsListViewItem = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.smiRename = new System.Windows.Forms.ToolStripMenuItem();
@@ -210,19 +210,19 @@
             this.tsmUpdate.Size = new System.Drawing.Size(65, 20);
             this.tsmUpdate.Text = "Atualizar";
             // 
-            // tsmUpdateList
-            // 
-            this.tsmUpdateList.Name = "tsmUpdateList";
-            this.tsmUpdateList.Size = new System.Drawing.Size(180, 22);
-            this.tsmUpdateList.Text = "Lista de impressoras";
-            this.tsmUpdateList.Click += new System.EventHandler(this.UpdatePrinterList);
-            // 
             // tsmUpdateStatus
             // 
             this.tsmUpdateStatus.Name = "tsmUpdateStatus";
             this.tsmUpdateStatus.Size = new System.Drawing.Size(180, 22);
             this.tsmUpdateStatus.Text = "Status";
             this.tsmUpdateStatus.Click += new System.EventHandler(this.UpdatePrinterStatus);
+            // 
+            // tsmUpdateList
+            // 
+            this.tsmUpdateList.Name = "tsmUpdateList";
+            this.tsmUpdateList.Size = new System.Drawing.Size(180, 22);
+            this.tsmUpdateList.Text = "Lista de impressoras";
+            this.tsmUpdateList.Click += new System.EventHandler(this.UpdatePrinterList);
             // 
             // groupBox2
             // 
@@ -251,7 +251,7 @@
             this.smiRename.Name = "smiRename";
             this.smiRename.Size = new System.Drawing.Size(128, 22);
             this.smiRename.Text = "Renomear";
-            this.smiRename.Click += new System.EventHandler(this.NewItemRenameForm);
+            this.smiRename.Click += new System.EventHandler(this.NewRenameForm);
             // 
             // sspDeleteSeparator
             // 
@@ -263,7 +263,7 @@
             this.smiDelete.Name = "smiDelete";
             this.smiDelete.Size = new System.Drawing.Size(128, 22);
             this.smiDelete.Text = "Excluir";
-            this.smiDelete.Click += new System.EventHandler(this.NewItemDeleteForm);
+            this.smiDelete.Click += new System.EventHandler(this.NewDeleteForm);
             // 
             // nfiNotify
             // 
@@ -272,6 +272,7 @@
             this.nfiNotify.ContextMenuStrip = this.cmsNotify;
             this.nfiNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("nfiNotify.Icon")));
             this.nfiNotify.Text = "CLN Print Monitor";
+            this.nfiNotify.Visible = true;
             this.nfiNotify.Click += new System.EventHandler(this.NotifyClick);
             // 
             // cmsNotify

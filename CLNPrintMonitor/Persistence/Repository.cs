@@ -1,10 +1,10 @@
 ﻿using CLNPrintMonitor.Model;
+using CLNPrintMonitor.Properties;
 using CLNPrintMonitor.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -22,9 +22,26 @@ namespace CLNPrintMonitor.Persistence
     public class Repository
     {
 
-        private Repository() { }
+        internal static string API_IPV4 = Resources.ApiIpv4;
+        internal static string API_NAME = Resources.ApiName;
+        internal static string API_ID = Resources.Id;
+        internal static string API_COMMAND = Resources.ApiCommand;
+        internal static string RESPONSE = Resources.Response;
+        internal static string SUCCESS = Resources.Success;
+        internal static string DATA = Resources.Data;
+        internal static string NAME = Resources.Name;
+        internal static string IPV4 = Resources.Ipv4;
+        internal static string ID = Resources.Id;
+        internal static string SECURE_KEY = Resources.SecureKey;
+        internal static string SECURE_KEY_CONTENT = Resources.SecureKeyContent;
+        internal static string API_URI = Resources.ApiUri;
 
         private static Repository instance;
+        private ConnectionErrorUIHandler connectionErroHandler = null;
+        public ConnectionErrorUIHandler ConnectionErroHandler { get => connectionErroHandler; set => connectionErroHandler = value; }
+        public delegate void ConnectionErrorUIHandler();
+
+        private Repository() { }
 
         /// <summary>
         /// 
@@ -50,17 +67,18 @@ namespace CLNPrintMonitor.Persistence
             {
                 Dictionary<string, string> param = new Dictionary<string, string>
                 {
-                    { "printer_ipv4", printer.Address.ToString() },
-                    { "printer_name", printer.Name }
+                    { API_IPV4, printer.Address.ToString() },
+                    { API_NAME, printer.Name }
                 };
                 string response = await this.Api(APICommand.Create, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
-                if(json.Property("response").Value.ToString() == "success")
+                if(json.Property(RESPONSE).Value.ToString() == SUCCESS)
                 {
                     return true;
                 }
             } catch(Exception ex)
             {
+                this.connectionErroHandler?.Invoke();
                 Console.WriteLine(ex);
             }
             return false;
@@ -78,21 +96,22 @@ namespace CLNPrintMonitor.Persistence
             {
                 Dictionary<string, string> param = new Dictionary<string, string>
                 {
-                    { "printer_ipv4", ip }
+                    { API_IPV4, ip }
                 };
                 string response = await this.Api(APICommand.Read, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
-                if (json.Property("response").Value.ToString() == "success")
+                if (json.Property(RESPONSE).Value.ToString() == SUCCESS)
                 {
-                    JObject content = (JObject)json.Property("data").Value;
+                    JObject content = (JObject)json.Property(DATA).Value;
                     printer = new Printer(
-                        content.Property("name").Value.ToString(),
-                        IPAddress.Parse(content.Property("ipv4").Value.ToString())
+                        content.Property(NAME).Value.ToString(),
+                        IPAddress.Parse(content.Property(IPV4).Value.ToString())
                     );
                     return printer;
                 }
             } catch(Exception ex)
             {
+                this.connectionErroHandler?.Invoke();
                 Console.WriteLine(ex);
             }
             return null;
@@ -109,18 +128,19 @@ namespace CLNPrintMonitor.Persistence
             {
                 Dictionary<string, string> param = new Dictionary<string, string>
                 {
-                    { "printer_ipv4", ip }
+                    { API_IPV4, ip }
                 };
                 string response = await this.Api(APICommand.Read, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
-                if (json.Property("response").Value.ToString() == "success")
+                if (json.Property(RESPONSE).Value.ToString() == SUCCESS)
                 {
-                    JObject content = (JObject)json.Property("data").Value;
-                    return Int32.Parse(content.Property("id").Value.ToString());
+                    JObject content = (JObject)json.Property(DATA).Value;
+                    return Int32.Parse(content.Property(ID).Value.ToString());
                 }
             }
             catch (Exception ex)
             {
+                this.connectionErroHandler?.Invoke();
                 Console.WriteLine(ex);
             }
             return 0;
@@ -138,16 +158,17 @@ namespace CLNPrintMonitor.Persistence
                 Dictionary<string, string> param = new Dictionary<string, string>();
                 string response = await this.Api(APICommand.ReadAll, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
-                if (json.Property("response").Value.ToString() == "success")
+                if (json.Property(RESPONSE).Value.ToString() == SUCCESS)
                 {
-                    foreach (JObject content in json.Property("data").Values())
+                    foreach (JObject content in json.Property(DATA).Values())
                     {
-                        printers.Add(new Printer(content.Property("name").Value.ToString(), IPAddress.Parse(content.Property("ipv4").Value.ToString())));
+                        printers.Add(new Printer(content.Property(NAME).Value.ToString(), IPAddress.Parse(content.Property(IPV4).Value.ToString())));
                     }
                 }
             }
             catch (Exception ex)
             {
+                this.connectionErroHandler?.Invoke();
                 Console.WriteLine(ex);
             }
             return printers;
@@ -164,19 +185,20 @@ namespace CLNPrintMonitor.Persistence
             {
                 Dictionary<string, string> param = new Dictionary<string, string>
                 {
-                    { "printer_ipv4", printer.Address.ToString() },
-                    { "printer_name", printer.Name },
-                    { "printer_id", id.ToString() }
+                    { API_IPV4, printer.Address.ToString() },
+                    { API_NAME, printer.Name },
+                    { API_ID, id.ToString() }
                 };
                 string response = await this.Api(APICommand.Update, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
-                if (json.Property("response").Value.ToString() == "success")
+                if (json.Property(RESPONSE).Value.ToString() == SUCCESS)
                 {
                     return true;
                 }
             }
             catch (Exception ex)
             {
+                this.connectionErroHandler?.Invoke();
                 Console.WriteLine(ex);
             }
             return true;
@@ -193,17 +215,18 @@ namespace CLNPrintMonitor.Persistence
             {
                 Dictionary<string, string> param = new Dictionary<string, string>
                 {
-                    { "printer_ipv4", ip }
+                    { API_IPV4, ip }
                 };
                 string response = await this.Api(APICommand.Delete, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
-                if (json.Property("response").Value.ToString() == "success")
+                if (json.Property(RESPONSE).Value.ToString() == SUCCESS)
                 {
                     return true;
                 }
             }
             catch (Exception ex)
             {
+                this.connectionErroHandler?.Invoke();
                 Console.WriteLine(ex);
             }
             return true;
@@ -221,29 +244,29 @@ namespace CLNPrintMonitor.Persistence
             {
                 param = new Dictionary<string, string>();
             }
-            param.Add("secure_key", "c21aeb51b992aa742705791e976ca16ab38fd2431c98bb38b7ea97a609548ffb");
+            param.Add(SECURE_KEY, SECURE_KEY_CONTENT);
             string response = null;
             switch (command)
             {
                 case APICommand.Create:
-                    param.Add("api_command", Convert.ToInt32(APICommand.Create).ToString());
-                    response = await Helpers.SendHttpPostRequest("http://localhost/CaCln/printer/api", param);
+                    param.Add(API_COMMAND, Convert.ToInt32(APICommand.Create).ToString());
+                    response = await Helpers.SendHttpPostRequest(API_URI, param);
                     break;
                 case APICommand.Read:
-                    param.Add("api_command", Convert.ToInt32(APICommand.Read).ToString());
-                    response = await Helpers.SendHttpPostRequest("http://localhost/CaCln/printer/api", param);
+                    param.Add(API_COMMAND, Convert.ToInt32(APICommand.Read).ToString());
+                    response = await Helpers.SendHttpPostRequest(API_URI, param);
                     break;
                 case APICommand.ReadAll:
-                    param.Add("api_command", Convert.ToInt32(APICommand.ReadAll).ToString());
-                    response = await Helpers.SendHttpPostRequest("http://localhost/CaCln/printer/api", param);
+                    param.Add(API_COMMAND, Convert.ToInt32(APICommand.ReadAll).ToString());
+                    response = await Helpers.SendHttpPostRequest(API_URI, param);
                     break;
                 case APICommand.Update:
-                    param.Add("api_command", Convert.ToInt32(APICommand.Update).ToString());
-                    response = await Helpers.SendHttpPostRequest("http://localhost/CaCln/printer/api", param);
+                    param.Add(API_COMMAND, Convert.ToInt32(APICommand.Update).ToString());
+                    response = await Helpers.SendHttpPostRequest(API_URI, param);
                     break;
                 case APICommand.Delete:
-                    param.Add("api_command", Convert.ToInt32(APICommand.Delete).ToString());
-                    response = await Helpers.SendHttpPostRequest("http://localhost/CaCln/printer/api", param);
+                    param.Add(API_COMMAND, Convert.ToInt32(APICommand.Delete).ToString());
+                    response = await Helpers.SendHttpPostRequest(API_URI, param);
                     break;
             }
             return response;

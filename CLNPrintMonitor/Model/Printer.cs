@@ -1,4 +1,5 @@
 ﻿using CLNPrintMonitor.Controller;
+using CLNPrintMonitor.Properties;
 using CLNPrintMonitor.Util;
 using HtmlAgilityPack;
 using System;
@@ -76,13 +77,14 @@ namespace CLNPrintMonitor.Model
     /// </summary>
     public class Printer 
     {
-        internal static string OK = "OK";
-        internal static string HTTP = "http://";
-        internal static string TOPBAR_URI = "/cgi-bin/dynamic/topbar.html";
-        internal static string STATUS_URI = "/cgi-bin/dynamic/printer/PrinterStatus.html";
-        internal static string NODE_QUERY = "//span[contains(@class,'top_prodname')]";
-        internal static string LOW_TONER_WARNING = "Baixo";
-        internal static string UNKNOWN_WARNING = "Desconhecido";
+        internal static string OK = Resources.Ok;
+        internal static string HTTP = Resources.Http;
+        internal static string TOPBAR_URI = Resources.TopbarUri;
+        internal static string STATUS_URI = Resources.StatusUri;
+        internal static string NODE_QUERY = Resources.NodeQuery;
+        internal static string LOW_TONER_WARNING = Resources.NodeQuery;
+        internal static string UNKNOWN_WARNING = Resources.UnknownWarning;
+        internal static string NODE_TD = Resources.NodeTd;
 
         private IPAddress address;
         private string name;
@@ -101,7 +103,7 @@ namespace CLNPrintMonitor.Model
         private PrinterController controllerUIRelation;
 
         public IPAddress Address { get => address; }
-        public string Name { get => name; }
+        public string Name { get => name; set => name = value; }
         public string Model { get => model; }
         public string DeviceType { get => deviceType; }
         public string Speed { get => speed; }
@@ -214,7 +216,7 @@ namespace CLNPrintMonitor.Model
         /// <param name="searchIn">Where it will be searched</param>
         private void SearchForPrinterStatus(List<string> attributes, HtmlDocument searchIn)
         {
-            foreach (HtmlNode td in searchIn.DocumentNode.SelectNodes("//td"))
+            foreach (HtmlNode td in searchIn.DocumentNode.SelectNodes(NODE_TD))
             {
                 string inner = Helpers.Normalize(td.InnerText);
                 if (inner != string.Empty)
@@ -280,8 +282,7 @@ namespace CLNPrintMonitor.Model
             } else if (!IsOnline())
             {
                 this.status = StatusIcon.Offline;
-            }
-            else if (this.defaultInput.Status != Printer.OK ||
+            } else if (this.defaultInput.Status != Printer.OK ||
               this.defaultOutput.Status != Printer.OK ||
               this.supplyMF.Status != Printer.OK ||
               this.ink < 30)

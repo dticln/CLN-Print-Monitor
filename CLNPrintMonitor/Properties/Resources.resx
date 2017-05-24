@@ -117,9 +117,45 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApiCommand" xml:space="preserve">
+    <value>api_command</value>
+  </data>
+  <data name="ApiId" xml:space="preserve">
+    <value>printer_id</value>
+  </data>
+  <data name="ApiIpv4" xml:space="preserve">
+    <value>printer_ipv4</value>
+  </data>
+  <data name="ApiName" xml:space="preserve">
+    <value>printer_name</value>
+  </data>
+  <data name="ApiUri" xml:space="preserve">
+    <value>http://localhost/CaCln/printer/api</value>
+  </data>
+  <data name="CapacityOf" xml:space="preserve">
+    <value>Capacidade de </value>
+  </data>
+  <data name="ConnectionErrorBody" xml:space="preserve">
+    <value>Não foi possível conectar à internet. Verifique suas configurações de rede.</value>
+  </data>
+  <data name="ConnectionErrorHeader" xml:space="preserve">
+    <value>Falha de conexão</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>data</value>
+  </data>
+  <data name="DeleteFormBody" xml:space="preserve">
+    <value>Deseja excluir a impressora </value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Http" xml:space="preserve">
+    <value>http://</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>id</value>
   </data>
   <data name="ink0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ink0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -136,7 +172,76 @@
   <data name="ink90" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ink90.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IpErrorBody" xml:space="preserve">
+    <value>O endereço IP deve seguir os padrões de formatação.</value>
+  </data>
+  <data name="IpErrorHeader" xml:space="preserve">
+    <value>Endereço IP inválido</value>
+  </data>
+  <data name="Ipv4" xml:space="preserve">
+    <value>ipv4</value>
+  </data>
+  <data name="LowTonerWarning" xml:space="preserve">
+    <value>Baixo</value>
+  </data>
+  <data name="MonitorAgent" xml:space="preserve">
+    <value>CLNPrinterMonitor Agent </value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>name</value>
+  </data>
+  <data name="NodeQuery" xml:space="preserve">
+    <value>//span[contains(@class,'top_prodname')]</value>
+  </data>
+  <data name="NodeTd" xml:space="preserve">
+    <value>//td</value>
+  </data>
+  <data name="NotifyIconNoToner" xml:space="preserve">
+    <value>está ficando sem toner.</value>
+  </data>
+  <data name="NotifyIconProblem" xml:space="preserve">
+    <value>necessita de atenção.</value>
+  </data>
+  <data name="NotifyIconText" xml:space="preserve">
+    <value>A impressora </value>
+  </data>
   <data name="offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\offline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Response" xml:space="preserve">
+    <value>response</value>
+  </data>
+  <data name="SecureKey" xml:space="preserve">
+    <value>secure_key</value>
+  </data>
+  <data name="SecureKeyContent" xml:space="preserve">
+    <value>c21aeb51b992aa742705791e976ca16ab38fd2431c98bb38b7ea97a609548ffb</value>
+  </data>
+  <data name="Sheets" xml:space="preserve">
+    <value> folhas.</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Tamanho </value>
+  </data>
+  <data name="StatusUri" xml:space="preserve">
+    <value>/cgi-bin/dynamic/printer/PrinterStatus.html</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>success</value>
+  </data>
+  <data name="TonerProblem" xml:space="preserve">
+    <value>Problema em impressora</value>
+  </data>
+  <data name="TonerWarning" xml:space="preserve">
+    <value>Aviso de toner</value>
+  </data>
+  <data name="TopbarUri" xml:space="preserve">
+    <value>/cgi-bin/dynamic/topbar.html</value>
+  </data>
+  <data name="UnknownWarning" xml:space="preserve">
+    <value>Desconhecido</value>
   </data>
 </root>
