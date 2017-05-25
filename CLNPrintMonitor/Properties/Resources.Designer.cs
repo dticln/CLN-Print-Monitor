@@ -97,7 +97,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a http://localhost/CaCln/printer/api.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a http://localhost/CaCln/printer/api/.
         /// </summary>
         internal static string ApiUri {
             get {

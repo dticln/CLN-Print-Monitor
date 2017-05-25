@@ -24,7 +24,7 @@ namespace CLNPrintMonitor.Persistence
 
         internal static string API_IPV4 = Resources.ApiIpv4;
         internal static string API_NAME = Resources.ApiName;
-        internal static string API_ID = Resources.Id;
+        internal static string API_ID = Resources.ApiId;
         internal static string API_COMMAND = Resources.ApiCommand;
         internal static string RESPONSE = Resources.Response;
         internal static string SUCCESS = Resources.Success;
@@ -183,12 +183,13 @@ namespace CLNPrintMonitor.Persistence
         {
             try
             {
+
                 Dictionary<string, string> param = new Dictionary<string, string>
                 {
                     { API_IPV4, printer.Address.ToString() },
                     { API_NAME, printer.Name },
                     { API_ID, id.ToString() }
-                };
+                }; 
                 string response = await this.Api(APICommand.Update, param);
                 JObject json = (JObject)JsonConvert.DeserializeObject(response);
                 if (json.Property(RESPONSE).Value.ToString() == SUCCESS)

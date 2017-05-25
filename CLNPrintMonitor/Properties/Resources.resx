@@ -130,7 +130,7 @@
     <value>printer_name</value>
   </data>
   <data name="ApiUri" xml:space="preserve">
-    <value>http://localhost/CaCln/printer/api</value>
+    <value>http://localhost/CaCln/printer/api/</value>
   </data>
   <data name="CapacityOf" xml:space="preserve">
     <value>Capacidade de </value>
