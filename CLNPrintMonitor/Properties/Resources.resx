@@ -130,7 +130,7 @@
     <value>printer_name</value>
   </data>
   <data name="ApiUri" xml:space="preserve">
-    <value>http://localhost/CaCln/printer/api/</value>
+    <value>https://www.ufrgs.br/cacln/printer/api/</value>
   </data>
   <data name="CapacityOf" xml:space="preserve">
     <value>Capacidade de </value>
@@ -197,10 +197,10 @@
     <value>//td</value>
   </data>
   <data name="NotifyIconNoToner" xml:space="preserve">
-    <value>está ficando sem toner.</value>
+    <value> está ficando sem toner.</value>
   </data>
   <data name="NotifyIconProblem" xml:space="preserve">
-    <value>necessita de atenção.</value>
+    <value> necessita de atenção.</value>
   </data>
   <data name="NotifyIconText" xml:space="preserve">
     <value>A impressora </value>
@@ -218,7 +218,7 @@
     <value>secure_key</value>
   </data>
   <data name="SecureKeyContent" xml:space="preserve">
-    <value>c21aeb51b992aa742705791e976ca16ab38fd2431c98bb38b7ea97a609548ffb</value>
+    <value />
   </data>
   <data name="Sheets" xml:space="preserve">
     <value> folhas.</value>

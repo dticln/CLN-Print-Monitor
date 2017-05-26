@@ -444,6 +444,10 @@ namespace CLNPrintMonitor.Controller
                 }
             }
         }
-        
+
+        private void NewReportForm(object sender, EventArgs e)
+        {
+            MessageBox.Show("Recurso ainda não implementado.", "Recurso não implementado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

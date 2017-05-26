@@ -11,12 +11,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text;
 using CLNPrintMonitor.Properties;
+using System.Collections.Specialized;
 
 namespace CLNPrintMonitor.Util
 {
     
     class Helpers
     {
+        public static object HttpUtility { get; private set; }
 
         /// <summary>
         /// 
@@ -68,15 +70,8 @@ namespace CLNPrintMonitor.Util
         /// <returns>Page data</returns>
         public static async Task<string> SendHttpRequest(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.UserAgent = Resources.MonitorAgent + Application.ProductVersion; 
-            request.Method = WebRequestMethods.Http.Get;
-            request.Timeout = 20000;
-            request.Proxy = null;
-            WebResponse response = await request.GetResponseAsync();
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            return reader.ReadToEnd();
+            HttpClient client = new HttpClient();
+            return await client.GetStringAsync(url);
         }
 
         /// <summary>
@@ -87,21 +82,12 @@ namespace CLNPrintMonitor.Util
         /// <returns></returns>
         public static async Task<string> SendHttpPostRequest(string url, Dictionary<string,string> param)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = WebRequestMethods.Http.Post;
-            string postParam = Helpers.DictionaryToString(param);
-            byte[] byteArray = Encoding.UTF8.GetBytes(postParam);
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = byteArray.Length;
-            request.UserAgent = Resources.MonitorAgent + Application.ProductVersion;
-            Stream dataStream = await request.GetRequestStreamAsync();
-            dataStream.Write(byteArray, 0, byteArray.Length);
-            dataStream.Close();
-            WebResponse response = request.GetResponse();
-
-            dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            return reader.ReadToEnd();
+            HttpClient client = new HttpClient();
+            FormUrlEncodedContent content = new FormUrlEncodedContent(param);
+            HttpResponseMessage response = await client.PostAsync(Resources.ApiUri, content);
+            var json = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(json);
+            return json;
         }
 
         /// <summary>

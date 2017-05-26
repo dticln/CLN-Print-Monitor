@@ -97,7 +97,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a http://localhost/CaCln/printer/api/.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a https://www.ufrgs.br/cacln/printer/api/.
         /// </summary>
         internal static string ApiUri {
             get {
@@ -301,7 +301,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a está ficando sem toner..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a  está ficando sem toner..
         /// </summary>
         internal static string NotifyIconNoToner {
             get {
@@ -310,7 +310,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a necessita de atenção..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a  necessita de atenção..
         /// </summary>
         internal static string NotifyIconProblem {
             get {
@@ -365,7 +365,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a c21aeb51b992aa742705791e976ca16ab38fd2431c98bb38b7ea97a609548ffb.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a .
         /// </summary>
         internal static string SecureKeyContent {
             get {
