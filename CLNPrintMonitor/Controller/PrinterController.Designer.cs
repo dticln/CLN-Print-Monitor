@@ -62,6 +62,7 @@
             this.lblSupplyMfInputType = new System.Windows.Forms.Label();
             this.lblSupplyMfInputCapacity = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.sfdReport = new System.Windows.Forms.SaveFileDialog();
             this.gpbInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbStatus)).BeginInit();
             this.grbDefaultInput.SuspendLayout();
@@ -352,7 +353,7 @@
             this.gpbOutput.Size = new System.Drawing.Size(142, 67);
             this.gpbOutput.TabIndex = 3;
             this.gpbOutput.TabStop = false;
-            this.gpbOutput.Text = "Saída de papel";
+            this.gpbOutput.Text = "Bandeja de saída padrão";
             // 
             // lblOuputStatus
             // 
@@ -443,6 +444,13 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "Gerar relatório";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.ShowReportDialog);
+            // 
+            // sfdReport
+            // 
+            this.sfdReport.FileName = "relatorio";
+            this.sfdReport.Filter = "Arquivo PDF|*.pdf";
+            this.sfdReport.Title = "Relatório de impressão";
             // 
             // PrinterController
             // 
@@ -508,5 +516,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ProgressBar pgbMaintenance;
         private System.Windows.Forms.ProgressBar pgbFc;
+        private System.Windows.Forms.SaveFileDialog sfdReport;
     }
 }

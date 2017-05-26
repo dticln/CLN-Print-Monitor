@@ -347,6 +347,15 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a /cgi-bin/dynamic/printer/config/reports/devicestatistics.html.
+        /// </summary>
+        internal static string ReportUri {
+            get {
+                return ResourceManager.GetString("ReportUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a response.
         /// </summary>
         internal static string Response {
@@ -365,7 +374,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a .
+        ///   Consulta uma cadeia de caracteres localizada semelhante a a04411e109a087df546e5adab0c070e4b87ba2fb501a2dcd74f98dcc571353b0.
         /// </summary>
         internal static string SecureKeyContent {
             get {

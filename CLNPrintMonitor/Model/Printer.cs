@@ -1,4 +1,5 @@
 ﻿using CLNPrintMonitor.Controller;
+using CLNPrintMonitor.Model.Interfaces;
 using CLNPrintMonitor.Properties;
 using CLNPrintMonitor.Util;
 using HtmlAgilityPack;
@@ -8,6 +9,13 @@ using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using System.Text;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
+using PdfSharp.Drawing.Layout;
+using System.Diagnostics;
+using PdfSharp;
+using System.Drawing;
 
 namespace CLNPrintMonitor.Model
 {
@@ -75,17 +83,21 @@ namespace CLNPrintMonitor.Model
     /// <summary>
     /// Represents a printer
     /// </summary>
-    public class Printer 
+    public class Printer : IPrinter
     {
+        #region Constants
         internal static string OK = Resources.Ok;
         internal static string HTTP = Resources.Http;
         internal static string TOPBAR_URI = Resources.TopbarUri;
         internal static string STATUS_URI = Resources.StatusUri;
+        internal static string REPORT_URI = Resources.ReportUri;
         internal static string NODE_QUERY = Resources.NodeQuery;
         internal static string LOW_TONER_WARNING = Resources.NodeQuery;
         internal static string UNKNOWN_WARNING = Resources.UnknownWarning;
         internal static string NODE_TD = Resources.NodeTd;
+        #endregion
 
+        #region Attributes
         private IPAddress address;
         private string name;
         private string model;
@@ -101,7 +113,6 @@ namespace CLNPrintMonitor.Model
         private StatusIcon status;
         private UpdateUIHandler updateUIInformation;
         private PrinterController controllerUIRelation;
-
         public IPAddress Address { get => address; }
         public string Name { get => name; set => name = value; }
         public string Model { get => model; }
@@ -117,8 +128,8 @@ namespace CLNPrintMonitor.Model
         public StatusIcon Status { get => status; }
         public UpdateUIHandler UpdateUIInformation { get => updateUIInformation; set => updateUIInformation = value; }
         public PrinterController ControllerUIRelation { get => controllerUIRelation; set => controllerUIRelation = value; }
-
         public delegate void UpdateUIHandler(PrinterController relation);
+        #endregion
 
         /// <summary>
         /// Basic constructor for a printer 
@@ -173,6 +184,22 @@ namespace CLNPrintMonitor.Model
             return this.SetInformations(list);
         }
 
+
+        public async Task<byte[]> GetReportFromDevice()
+        {
+            string response;
+            try
+            {
+                response = await Helpers.SendHttpRequest(Printer.HTTP + this.address + Printer.REPORT_URI);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+            HtmlDocument html = this.CreateDocument(response);
+            return this.SimplePDFReport(html);
+        }
 
         /// <summary>
         /// Remove warnings strings from attributes list
@@ -305,6 +332,12 @@ namespace CLNPrintMonitor.Model
             {
                 this.status = StatusIcon.Ink100;
             }
+        }
+
+        private byte[] SimplePDFReport(HtmlDocument html)
+        {
+            /*GENERATE PDF*/
+            return null;
         }
     }
 }

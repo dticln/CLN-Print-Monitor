@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using CLNPrintMonitor.Util;
+using System.IO;
 
 namespace CLNPrintMonitor.Controller
 {
@@ -76,7 +77,7 @@ namespace CLNPrintMonitor.Controller
             target.lblSupplyMfInputScale.Text = Resources.Size + printer.SupplyMF.Scale;
             target.lblSupplyMfInputType.Text = printer.SupplyMF.Type;
             target.lblSupplyMfStatus.Text = printer.SupplyMF.Status;
-            target.gpbOutput.Text = printer.DefaultOutput.Name;
+            //target.gpbOutput.Text = printer.DefaultOutput.Name;
             target.lblOuputCapacity.Text = Resources.CapacityOf + printer.DefaultOutput.Capacity.ToString() + Resources.Sheets;
             target.lblOuputStatus.Text = printer.DefaultOutput.Status;
             target.SetProgressBarColor(pgbFc);
@@ -136,6 +137,24 @@ namespace CLNPrintMonitor.Controller
                 Helpers.ModifyProgressBarColor(pgb, 3);
             }
         }
-        
+
+        private void ShowReportDialog(object sender, EventArgs e)
+        {
+            new Task(() => executeReportDialog()).Start();
+        }
+
+        private async void executeReportDialog()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { executeReportDialog(); });
+                return;
+            }
+            if (sfdReport.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                byte[] file = await printer.GetReportFromDevice();
+                File.WriteAllBytes(sfdReport.FileName, file);
+            }
+        }
     }
 }

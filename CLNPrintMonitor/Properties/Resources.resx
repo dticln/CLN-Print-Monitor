@@ -218,7 +218,7 @@
     <value>secure_key</value>
   </data>
   <data name="SecureKeyContent" xml:space="preserve">
-    <value />
+    <value>a04411e109a087df546e5adab0c070e4b87ba2fb501a2dcd74f98dcc571353b0</value>
   </data>
   <data name="Sheets" xml:space="preserve">
     <value> folhas.</value>
@@ -243,5 +243,8 @@
   </data>
   <data name="UnknownWarning" xml:space="preserve">
     <value>Desconhecido</value>
+  </data>
+  <data name="ReportUri" xml:space="preserve">
+    <value>/cgi-bin/dynamic/printer/config/reports/devicestatistics.html</value>
   </data>
 </root>

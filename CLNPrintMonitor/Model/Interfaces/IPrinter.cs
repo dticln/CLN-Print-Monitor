@@ -11,5 +11,6 @@ namespace CLNPrintMonitor.Model.Interfaces
     {
         bool IsOnline();
         Task<bool> GetInformationFromDevice();
+        Task<byte[]> GetReportFromDevice(); 
     }
 }
