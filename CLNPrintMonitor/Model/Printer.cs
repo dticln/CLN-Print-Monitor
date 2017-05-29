@@ -3,19 +3,15 @@ using CLNPrintMonitor.Model.Interfaces;
 using CLNPrintMonitor.Properties;
 using CLNPrintMonitor.Util;
 using HtmlAgilityPack;
+using iTextSharp.text;
+using iTextSharp.text.html.simpleparser;
+using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-using System.Text;
-using PdfSharp.Pdf;
-using PdfSharp.Drawing;
-using PdfSharp.Drawing.Layout;
-using System.Diagnostics;
-using PdfSharp;
-using System.Drawing;
 
 namespace CLNPrintMonitor.Model
 {
@@ -190,13 +186,12 @@ namespace CLNPrintMonitor.Model
             string response;
             try
             {
-                response = await Helpers.SendHttpRequest(Printer.HTTP + this.address + Printer.REPORT_URI);
+                response = await Helpers.SendHttpRequestIso(Printer.HTTP + this.address + Printer.REPORT_URI);
             }
             catch (Exception)
             {
                 return null;
             }
-
             HtmlDocument html = this.CreateDocument(response);
             return this.SimplePDFReport(html);
         }
@@ -222,7 +217,7 @@ namespace CLNPrintMonitor.Model
             document.LoadHtml(text);
             return document;
         }
-
+        
         /// <summary>
         /// Search for printer information inside HtmlDocument
         /// </summary>
@@ -336,8 +331,18 @@ namespace CLNPrintMonitor.Model
 
         private byte[] SimplePDFReport(HtmlDocument html)
         {
-            /*GENERATE PDF*/
-            return null;
+            MemoryStream msOutput = new MemoryStream();
+            TextReader reader = new StringReader(html.DocumentNode.InnerHtml);
+            Document document = new Document(PageSize.A4, 30, 30, 30, 30);
+            PdfWriter writer = PdfWriter.GetInstance(document, msOutput);
+            HTMLWorker worker = new HTMLWorker(document);
+            document.Open();
+            worker.StartDocument();
+            worker.Parse(reader);
+            worker.EndDocument();
+            worker.Close();
+            document.Close();
+            return msOutput.ToArray();
         }
     }
 }

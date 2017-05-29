@@ -85,9 +85,20 @@ namespace CLNPrintMonitor.Util
             HttpClient client = new HttpClient();
             FormUrlEncodedContent content = new FormUrlEncodedContent(param);
             HttpResponseMessage response = await client.PostAsync(Resources.ApiUri, content);
-            var json = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(json);
-            return json;
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static async Task<string> SendHttpRequestIso(string url)
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(url);
+            response.Content.Headers.ContentType.CharSet = "ISO-8859-1";
+            return await response.Content.ReadAsStringAsync();
         }
 
         /// <summary>
