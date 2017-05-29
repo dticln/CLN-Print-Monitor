@@ -140,20 +140,20 @@ namespace CLNPrintMonitor.Controller
 
         private void ShowReportDialog(object sender, EventArgs e)
         {
-            new Task(() => executeReportDialog()).Start();
+            new Task(() => ExecuteReportDialog()).Start();
         }
 
-        private async void executeReportDialog()
+        private async void ExecuteReportDialog()
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { executeReportDialog(); });
+                Invoke((MethodInvoker)delegate { ExecuteReportDialog(); });
                 return;
             }
-            if (sfdReport.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (sfdReport.ShowDialog() == DialogResult.OK)
             {
                 byte[] file = await printer.GetReportFromDevice();
-                File.WriteAllBytes(sfdReport.FileName, file);
+                Helpers.SavePdfFile(sfdReport.FileName, file);
             }
         }
     }

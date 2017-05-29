@@ -3,12 +3,8 @@ using CLNPrintMonitor.Model.Interfaces;
 using CLNPrintMonitor.Properties;
 using CLNPrintMonitor.Util;
 using HtmlAgilityPack;
-using iTextSharp.text;
-using iTextSharp.text.html.simpleparser;
-using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
@@ -79,7 +75,7 @@ namespace CLNPrintMonitor.Model
     /// <summary>
     /// Represents a printer
     /// </summary>
-    public class Printer : IPrinter
+    public class Printer : IPrinter, ICloneable
     {
         #region Constants
         internal static string OK = Resources.Ok;
@@ -171,8 +167,8 @@ namespace CLNPrintMonitor.Model
                 return false;
             }
 
-            HtmlDocument htmlInfo = this.CreateDocument(bufferInfo);
-            HtmlDocument htmlStatus = this.CreateDocument(bufferStatus);
+            HtmlDocument htmlInfo = Helpers.CreateDocument(bufferInfo);
+            HtmlDocument htmlStatus = Helpers.CreateDocument(bufferStatus);
 
             this.SearchForPrinterInformation(list, htmlInfo);
             this.SearchForPrinterStatus(list, htmlStatus);
@@ -192,9 +188,24 @@ namespace CLNPrintMonitor.Model
             {
                 return null;
             }
-            HtmlDocument html = this.CreateDocument(response);
-            return this.SimplePDFReport(html);
+            HtmlDocument html = Helpers.CreateDocument(response);
+            return Helpers.SimplePDFReport(html);
         }
+
+        public async Task<string> GetRawReportFromDevice()
+        {
+            string response;
+            try
+            {
+                response = await Helpers.SendHttpRequestIso(Printer.HTTP + this.address + Printer.REPORT_URI);
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+            return response;
+        }
+
 
         /// <summary>
         /// Remove warnings strings from attributes list
@@ -206,17 +217,6 @@ namespace CLNPrintMonitor.Model
             attributes.RemoveAll(item => item == Printer.UNKNOWN_WARNING);
         }
 
-        /// <summary>
-        /// Create a HtmlDocument from string
-        /// </summary>
-        /// <param name="text">Data from request</param>
-        /// <returns>A HtmlDocument from text</returns>
-        private HtmlDocument CreateDocument(string text)
-        {
-            HtmlDocument document = new HtmlDocument();
-            document.LoadHtml(text);
-            return document;
-        }
         
         /// <summary>
         /// Search for printer information inside HtmlDocument
@@ -329,20 +329,10 @@ namespace CLNPrintMonitor.Model
             }
         }
 
-        private byte[] SimplePDFReport(HtmlDocument html)
+
+        public object Clone()
         {
-            MemoryStream msOutput = new MemoryStream();
-            TextReader reader = new StringReader(html.DocumentNode.InnerHtml);
-            Document document = new Document(PageSize.A4, 30, 30, 30, 30);
-            PdfWriter writer = PdfWriter.GetInstance(document, msOutput);
-            HTMLWorker worker = new HTMLWorker(document);
-            document.Open();
-            worker.StartDocument();
-            worker.Parse(reader);
-            worker.EndDocument();
-            worker.Close();
-            document.Close();
-            return msOutput.ToArray();
+            return this.MemberwiseClone();
         }
     }
 }

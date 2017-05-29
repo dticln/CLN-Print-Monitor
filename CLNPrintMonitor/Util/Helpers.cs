@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -11,7 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text;
 using CLNPrintMonitor.Properties;
-using System.Collections.Specialized;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.html.simpleparser;
 
 namespace CLNPrintMonitor.Util
 {
@@ -86,6 +87,7 @@ namespace CLNPrintMonitor.Util
             FormUrlEncodedContent content = new FormUrlEncodedContent(param);
             HttpResponseMessage response = await client.PostAsync(Resources.ApiUri, content);
             return await response.Content.ReadAsStringAsync();
+
         }
 
         /// <summary>
@@ -134,6 +136,49 @@ namespace CLNPrintMonitor.Util
             return builder.ToString();
         }
 
+        public static bool SavePdfFile(string path, byte[] stream)
+        {
+            try
+            {
+                File.WriteAllBytes(path, stream);
+                System.Diagnostics.Process.Start(path);
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Falha ao salvar arquivo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return false;
+        }
+        
+        public static byte[] SimplePDFReport(HtmlAgilityPack.HtmlDocument html)
+        {
+            MemoryStream msOutput = new MemoryStream();
+            TextReader reader = new StringReader(html.DocumentNode.InnerHtml);
+            Document document = new Document(PageSize.A4, 30, 30, 30, 30);
+            PdfWriter writer = PdfWriter.GetInstance(document, msOutput);
+            HTMLWorker worker = new HTMLWorker(document);
+            document.Open();
+            worker.StartDocument();
+            worker.Parse(reader);
+            worker.EndDocument();
+            worker.Close();
+            document.Close();
+            return msOutput.ToArray();
+        }
+
+
+        /// <summary>
+        /// Create a HtmlDocument from string
+        /// </summary>
+        /// <param name="text">Data from request</param>
+        /// <returns>A HtmlDocument from text</returns>
+        public static HtmlAgilityPack.HtmlDocument CreateDocument(string text)
+        {
+            HtmlAgilityPack.HtmlDocument document = new HtmlAgilityPack.HtmlDocument();
+            document.LoadHtml(text);
+            return document;
+        }
     }
 
     internal static class NativeMethods

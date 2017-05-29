@@ -51,11 +51,13 @@
             this.tsmUpdateList = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cmsListViewItem = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.smiRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.relatórioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sspDeleteSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.smiRename = new System.Windows.Forms.ToolStripMenuItem();
             this.smiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.nfiNotify = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsNotify = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.sfdReport = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.mnsHeader.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -186,19 +188,19 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
             this.toolStripMenuItem1.Text = "&Relatórios";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.NewReportForm);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(123, 6);
             // 
             // tsmExit
             // 
             this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(152, 22);
+            this.tsmExit.Size = new System.Drawing.Size(126, 22);
             this.tsmExit.Text = "&Sair";
             this.tsmExit.Click += new System.EventHandler(this.ExitClick);
             // 
@@ -241,11 +243,24 @@
             // cmsListViewItem
             // 
             this.cmsListViewItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.smiRename,
+            this.relatórioToolStripMenuItem,
             this.sspDeleteSeparator,
+            this.smiRename,
             this.smiDelete});
             this.cmsListViewItem.Name = "cmsListViewItem";
-            this.cmsListViewItem.Size = new System.Drawing.Size(129, 54);
+            this.cmsListViewItem.Size = new System.Drawing.Size(129, 76);
+            // 
+            // relatórioToolStripMenuItem
+            // 
+            this.relatórioToolStripMenuItem.Name = "relatórioToolStripMenuItem";
+            this.relatórioToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.relatórioToolStripMenuItem.Text = "Relatório";
+            this.relatórioToolStripMenuItem.Click += new System.EventHandler(this.ShowReportDialog);
+            // 
+            // sspDeleteSeparator
+            // 
+            this.sspDeleteSeparator.Name = "sspDeleteSeparator";
+            this.sspDeleteSeparator.Size = new System.Drawing.Size(125, 6);
             // 
             // smiRename
             // 
@@ -253,11 +268,6 @@
             this.smiRename.Size = new System.Drawing.Size(128, 22);
             this.smiRename.Text = "Renomear";
             this.smiRename.Click += new System.EventHandler(this.NewRenameForm);
-            // 
-            // sspDeleteSeparator
-            // 
-            this.sspDeleteSeparator.Name = "sspDeleteSeparator";
-            this.sspDeleteSeparator.Size = new System.Drawing.Size(125, 6);
             // 
             // smiDelete
             // 
@@ -280,6 +290,12 @@
             // 
             this.cmsNotify.Name = "cmsNotify";
             this.cmsNotify.Size = new System.Drawing.Size(61, 4);
+            // 
+            // sfdReport
+            // 
+            this.sfdReport.FileName = "relatorio";
+            this.sfdReport.Filter = "Arquivo PDF|*.pdf";
+            this.sfdReport.Title = "Relatório de impressão";
             // 
             // Main
             // 
@@ -334,6 +350,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmUpdate;
         private System.Windows.Forms.ToolStripMenuItem tsmUpdateList;
         private System.Windows.Forms.ToolStripMenuItem tsmUpdateStatus;
+        private System.Windows.Forms.ToolStripMenuItem relatórioToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog sfdReport;
     }
 }
 

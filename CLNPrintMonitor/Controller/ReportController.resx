@@ -117,50 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="stsFooter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="tmrRefresh.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>133, 17</value>
-  </metadata>
-  <metadata name="mnsHeader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>244, 17</value>
-  </metadata>
-  <metadata name="cmsListViewItem.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>358, 17</value>
-  </metadata>
-  <metadata name="nfiNotify.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>500, 17</value>
-  </metadata>
-  <metadata name="cmsNotify.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>599, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="nfiNotify.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA
-        AADx8fH/8fHx//Hx8f/x8fH/8fHx//Hx8f/l177/6+PW/+nfzv/l1r3/8fHx//Hx8f/x8fH/8fHx//Hx
-        8f/x8fH/////////////////////////////////5cSN/+3WsP/r0qn/4bt7//7+/f//////////////
-        ///////////////////+/fz//v79//z48v/9+/j/8N7A//r06//arF//4r6B/+3Ys//48eT/9uzb//7+
-        /f/69Or/////////////////4Lp6/+C6ef/q0KT/9+7f//r06v/79u//1J9F/9mpWP/v2rn/9enV//Tn
-        0f/v3L3/3bNs//ny5//69ez/7ti1//Dev//w3sD/+PHk//79+//ozJ7/+fPo//nz6P/47+H/9OfR/+nO
-        of/brmT//Pjy//z48//8+fX/+/bu//Hgw//r06r/9enV//br2P/z5Mv/5saR//Xq1//16tf/9OfS//Xo
-        0//u2LT/48GH/+bIlv/48eT/9+7f//v37//s1Kz/+fHl/92yav/t2LP/8+TL/+3Xsv/58uf/9uvY/+G9
-        f//u2rf/7tq4//Xo1P/05tD/+/fw//HgxP/ft3P//Pjy//Tn0v/lxY//7ti0//Lix//79/D/8+bO//bs
-        2v/t17P/5siV//379//gunn/5siV//br2P/8+vb/8N7A///////+/v3/5MOM//Pmzv/16dX/6Mub/+3Y
-        tP/x38H//Pr2//Hfwv/t17L/3rVv/+7auP////////////////////////////38+v/37d3/+vTr/+3X
-        sf/79/D/8+XO/+PBh//79/H/+vTr//Xq1//w3b7/////////////////////////////////4r2B//Hh
-        xf/16dX/69Ko//br2P/58eX/7NSt//r06//8+PL//Pnz//////////////////////////////////Lj
-        yv/58uf/8eDD/+jMnP/8+vX/+/bv///////9+/j/6c6g/+K+gv//////////////////////////////
-        /////////fr2//DewP/37d3/8N/B/+bIlf///////////9+4dv/pz6L/////////////////////////
-        //////////////r06v/r0qn//Pjz//fu3v/w38H//Pn0///////+/v7//v7+////////////////////
-        //////////////////////////////r16//27Nr/+vXs//DewP/nypj//v38////////////////////
-        ///////////////////////////////////////////////////69Ov/7tq4//7+/v//////////////
-        ////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAA==
-</value>
-  </data>
   <metadata name="sfdReport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>706, 17</value>
+    <value>17, 17</value>
   </metadata>
 </root>

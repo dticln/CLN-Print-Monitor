@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -147,10 +148,28 @@ namespace CLNPrintMonitor.Controller
             }
             this.lvwMain.Clear();
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        private async void InvokeSaveReportDialog()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { InvokeSaveReportDialog(); });
+                return;
+            }
+            if (sfdReport.ShowDialog() == DialogResult.OK)
+            {
+                Printer printer = Helpers.FindPrinter(this.printers, this.lvwMain.FocusedItem.SubItems[1].Text);
+                byte[] file = await printer.GetReportFromDevice();
+                Helpers.SavePdfFile(sfdReport.FileName, file);
+            }
+        }
+        
+        #endregion
 
-#endregion
-
-#region Event handlers 
+        #region Event handlers 
 
         /// <summary>
         /// Button click handler
@@ -267,11 +286,12 @@ namespace CLNPrintMonitor.Controller
             Printer printer = Helpers.FindPrinter(this.printers, clicked.SubItems[1].Text);
             if(printer != null && printer.Status != StatusIcon.Offline)
             {
-                if(this.childrenForm == null || this.childrenForm.IsDisposed)
+                if (this.childrenForm == null || this.childrenForm.IsDisposed)
                 {
                     this.childrenForm = new PrinterController(printer);
                     this.childrenForm.Show();
-                } else
+                }
+                else
                 {
                     this.childrenForm.UpdatePrinterReference(printer);
                     this.childrenForm.BringToFront();
@@ -319,6 +339,16 @@ namespace CLNPrintMonitor.Controller
                 default:
                     break;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowReportDialog(object sender, EventArgs e)
+        {
+            new Task(() => InvokeSaveReportDialog()).Start();
         }
 
         /// <summary>
@@ -387,8 +417,24 @@ namespace CLNPrintMonitor.Controller
             GetPrintersFromRemote();
         }
 
-#endregion
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewReportForm(object sender, EventArgs e)
+        {
+            List<Printer> list = new List<Printer>();
+            foreach(var item in this.printers)
+            {
+                list.Add((Printer)item.Clone());   
+            }
+            ReportController rename = new ReportController(list);
+            rename.ShowDialog();
+        }
+
+        #endregion
+
         /// <summary>
         /// 
         /// </summary>
@@ -443,11 +489,6 @@ namespace CLNPrintMonitor.Controller
                         break;
                 }
             }
-        }
-
-        private void NewReportForm(object sender, EventArgs e)
-        {
-            MessageBox.Show("Recurso ainda não implementado.", "Recurso não implementado", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

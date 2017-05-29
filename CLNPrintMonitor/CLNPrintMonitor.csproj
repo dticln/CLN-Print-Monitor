@@ -25,8 +25,8 @@
     <InstallUrl>https://ufrgs.br/cacln/app/assets/downloads/clnpma/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>0.9.5.%2a</ApplicationVersion>
+    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationVersion>0.10.5.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -132,6 +132,12 @@
     <Compile Include="Controller\RenameController.Designer.cs">
       <DependentUpon>RenameController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controller\ReportController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controller\ReportController.Designer.cs">
+      <DependentUpon>ReportController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Interfaces\IPrinter.cs" />
     <Compile Include="Model\Printer.cs" />
     <Compile Include="Program.cs" />
@@ -143,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controller\PrinterController.resx">
       <DependentUpon>PrinterController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controller\ReportController.resx">
+      <DependentUpon>ReportController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
