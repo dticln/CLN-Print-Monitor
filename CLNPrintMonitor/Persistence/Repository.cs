@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CLNPrintMonitor.Persistence
 {
@@ -33,7 +34,7 @@ namespace CLNPrintMonitor.Persistence
         internal static string IPV4 = Resources.Ipv4;
         internal static string ID = Resources.Id;
         internal static string SECURE_KEY = Resources.SecureKey;
-        internal static string SECURE_KEY_CONTENT = Resources.SecureKeyContent;
+        internal static string SECURE_KEY_CONTENT = Security.Decrypt(Resources.SecureKeyContent);
         internal static string API_URI = Resources.ApiUri;
 
         private static Repository instance;

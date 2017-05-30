@@ -311,6 +311,7 @@
             this.Name = "Main";
             this.Text = "CLNPrinterMonitor";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.MainLoad);
             this.Resize += new System.EventHandler(this.MainResize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

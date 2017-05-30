@@ -217,9 +217,6 @@
   <data name="SecureKey" xml:space="preserve">
     <value>secure_key</value>
   </data>
-  <data name="SecureKeyContent" xml:space="preserve">
-    <value>a04411e109a087df546e5adab0c070e4b87ba2fb501a2dcd74f98dcc571353b0</value>
-  </data>
   <data name="Sheets" xml:space="preserve">
     <value> folhas.</value>
   </data>
@@ -246,5 +243,8 @@
   </data>
   <data name="ReportUri" xml:space="preserve">
     <value>/cgi-bin/dynamic/printer/config/reports/devicestatistics.html</value>
+  </data>
+  <data name="SecureKeyContent" xml:space="preserve">
+    <value>EAAAAODvIEh6soiWMPKLF8brWaRUFuz+ILwkN4Km2k43mlvJqQ8R86Mw7HzaFEh+tG4krRDFSUtEBdSlDhZW6aHyblqXPI0C0kC5JuUcOQ/mkNcO/ZFXGUe0w66VoIDkmoRdn5x3U2SibK7yan5GXpikAm3zua8iunBczRmvlciaM/R91p55AtHHyXFZmwxXoqmVrfGHFE3qYXp05ALdRPwGpYA=</value>
   </data>
 </root>
