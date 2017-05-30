@@ -306,12 +306,12 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.stsFooter);
             this.Controls.Add(this.mnsHeader);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mnsHeader;
             this.MinimumSize = new System.Drawing.Size(600, 200);
             this.Name = "Main";
-            this.Text = "CLNPrinterMonitor";
+            this.Text = "Print Monitor Agent - Campus Litoral Norte";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.MainLoad);
             this.Resize += new System.EventHandler(this.MainResize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
