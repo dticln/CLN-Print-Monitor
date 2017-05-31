@@ -32,8 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.btnAddPrinter = new System.Windows.Forms.Button();
             this.lvwMain = new System.Windows.Forms.ListView();
-            this.clnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clnIpv4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbxNamePrinter = new System.Windows.Forms.TextBox();
             this.tbxIpPrinter = new System.Windows.Forms.TextBox();
@@ -58,10 +56,17 @@
             this.nfiNotify = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsNotify = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.sfdReport = new System.Windows.Forms.SaveFileDialog();
+            this.cmsNonListViewItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.atualizarStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.atualizarImpressorasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clhName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clhIpv4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clhStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1.SuspendLayout();
             this.mnsHeader.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.cmsListViewItem.SuspendLayout();
+            this.cmsNonListViewItem.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAddPrinter
@@ -76,31 +81,25 @@
             // 
             // lvwMain
             // 
+            this.lvwMain.AllowColumnReorder = true;
             this.lvwMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvwMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.clnName,
-            this.clnIpv4});
+            this.clhName,
+            this.clhIpv4,
+            this.clhStatus});
+            this.lvwMain.LabelWrap = false;
             this.lvwMain.Location = new System.Drawing.Point(6, 19);
+            this.lvwMain.MultiSelect = false;
             this.lvwMain.Name = "lvwMain";
             this.lvwMain.Size = new System.Drawing.Size(545, 230);
             this.lvwMain.TabIndex = 2;
-            this.lvwMain.TileSize = new System.Drawing.Size(250, 150);
+            this.lvwMain.TileSize = new System.Drawing.Size(350, 150);
             this.lvwMain.UseCompatibleStateImageBehavior = false;
             this.lvwMain.View = System.Windows.Forms.View.Tile;
             this.lvwMain.ItemActivate += new System.EventHandler(this.ShowPrinterForm);
             this.lvwMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ListViewClickHandler);
-            // 
-            // clnName
-            // 
-            this.clnName.Text = "Nome";
-            this.clnName.Width = 390;
-            // 
-            // clnIpv4
-            // 
-            this.clnIpv4.Text = "IP";
-            this.clnIpv4.Width = 126;
             // 
             // groupBox1
             // 
@@ -297,6 +296,28 @@
             this.sfdReport.Filter = "Arquivo PDF|*.pdf";
             this.sfdReport.Title = "Relatório de impressão";
             // 
+            // cmsNonListViewItem
+            // 
+            this.cmsNonListViewItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.atualizarStatusToolStripMenuItem,
+            this.atualizarImpressorasToolStripMenuItem});
+            this.cmsNonListViewItem.Name = "cmsNotify";
+            this.cmsNonListViewItem.Size = new System.Drawing.Size(187, 48);
+            // 
+            // atualizarStatusToolStripMenuItem
+            // 
+            this.atualizarStatusToolStripMenuItem.Name = "atualizarStatusToolStripMenuItem";
+            this.atualizarStatusToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.atualizarStatusToolStripMenuItem.Text = "Atualizar status";
+            this.atualizarStatusToolStripMenuItem.Click += new System.EventHandler(this.UpdatePrinterStatus);
+            // 
+            // atualizarImpressorasToolStripMenuItem
+            // 
+            this.atualizarImpressorasToolStripMenuItem.Name = "atualizarImpressorasToolStripMenuItem";
+            this.atualizarImpressorasToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.atualizarImpressorasToolStripMenuItem.Text = "Atualizar impressoras";
+            this.atualizarImpressorasToolStripMenuItem.Click += new System.EventHandler(this.UpdatePrinterList);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -319,6 +340,7 @@
             this.mnsHeader.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.cmsListViewItem.ResumeLayout(false);
+            this.cmsNonListViewItem.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -326,9 +348,6 @@
 
         #endregion
         private System.Windows.Forms.Button btnAddPrinter;
-        private System.Windows.Forms.ListView lvwMain;
-        private System.Windows.Forms.ColumnHeader clnName;
-        private System.Windows.Forms.ColumnHeader clnIpv4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbxIpPrinter;
         private System.Windows.Forms.StatusStrip stsFooter;
@@ -353,6 +372,13 @@
         private System.Windows.Forms.ToolStripMenuItem tsmUpdateStatus;
         private System.Windows.Forms.ToolStripMenuItem relatórioToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog sfdReport;
+        private System.Windows.Forms.ContextMenuStrip cmsNonListViewItem;
+        private System.Windows.Forms.ToolStripMenuItem atualizarStatusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem atualizarImpressorasToolStripMenuItem;
+        private System.Windows.Forms.ListView lvwMain;
+        public System.Windows.Forms.ColumnHeader clhName;
+        public System.Windows.Forms.ColumnHeader clhIpv4;
+        public System.Windows.Forms.ColumnHeader clhStatus;
     }
 }
 

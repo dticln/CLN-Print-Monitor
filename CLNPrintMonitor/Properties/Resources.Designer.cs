@@ -301,16 +301,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a  está ficando sem toner..
-        /// </summary>
-        internal static string NotifyIconNoToner {
-            get {
-                return ResourceManager.GetString("NotifyIconNoToner", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a  necessita de atenção..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a  necessita de atenção: .
         /// </summary>
         internal static string NotifyIconProblem {
             get {
@@ -343,6 +334,15 @@ namespace CLNPrintMonitor.Properties {
         internal static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Problema na impressora.
+        /// </summary>
+        internal static string Problem {
+            get {
+                return ResourceManager.GetString("Problem", resourceCulture);
             }
         }
         
@@ -419,24 +419,6 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Problema em impressora.
-        /// </summary>
-        internal static string TonerProblem {
-            get {
-                return ResourceManager.GetString("TonerProblem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Aviso de toner.
-        /// </summary>
-        internal static string TonerWarning {
-            get {
-                return ResourceManager.GetString("TonerWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a /cgi-bin/dynamic/topbar.html.
         /// </summary>
         internal static string TopbarUri {
@@ -451,6 +433,15 @@ namespace CLNPrintMonitor.Properties {
         internal static string UnknownWarning {
             get {
                 return ResourceManager.GetString("UnknownWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Atenção.
+        /// </summary>
+        internal static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }

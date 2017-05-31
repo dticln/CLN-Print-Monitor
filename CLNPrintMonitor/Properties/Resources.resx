@@ -196,11 +196,8 @@
   <data name="NodeTd" xml:space="preserve">
     <value>//td</value>
   </data>
-  <data name="NotifyIconNoToner" xml:space="preserve">
-    <value> está ficando sem toner.</value>
-  </data>
   <data name="NotifyIconProblem" xml:space="preserve">
-    <value> necessita de atenção.</value>
+    <value> necessita de atenção: </value>
   </data>
   <data name="NotifyIconText" xml:space="preserve">
     <value>A impressora </value>
@@ -229,11 +226,11 @@
   <data name="Success" xml:space="preserve">
     <value>success</value>
   </data>
-  <data name="TonerProblem" xml:space="preserve">
-    <value>Problema em impressora</value>
+  <data name="Problem" xml:space="preserve">
+    <value>Problema na impressora</value>
   </data>
-  <data name="TonerWarning" xml:space="preserve">
-    <value>Aviso de toner</value>
+  <data name="Warning" xml:space="preserve">
+    <value>Atenção</value>
   </data>
   <data name="TopbarUri" xml:space="preserve">
     <value>/cgi-bin/dynamic/topbar.html</value>

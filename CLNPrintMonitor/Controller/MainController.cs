@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.ListViewItem;
 
 namespace CLNPrintMonitor.Controller
 {
@@ -19,7 +20,6 @@ namespace CLNPrintMonitor.Controller
 
         private ObservableCollection<Printer> printers;
         private PrinterController childrenForm;
-        
         /// <summary>
         /// Initialize component, ListView and printers ObservableCollection
         /// </summary>
@@ -102,6 +102,8 @@ namespace CLNPrintMonitor.Controller
                     item.ImageIndex = (int)printer.Status;
                     item.Text = printer.Name;
                     item.SubItems[1].Text = printer.Address.ToString();
+                    item.SubItems[2].Text = printer.Feedback;
+                    SetSubitemColor(item.SubItems[2], printer.Feedback);
                     return;
                 }
             }
@@ -146,7 +148,7 @@ namespace CLNPrintMonitor.Controller
                 Invoke((MethodInvoker)delegate { this.InvokeClearItems(); });
                 return;
             }
-            this.lvwMain.Clear();
+            this.lvwMain.Items.Clear();
         }
         
         /// <summary>
@@ -221,11 +223,14 @@ namespace CLNPrintMonitor.Controller
                     printer = e.NewItems[0] as Printer;
                     ListViewItem item = new ListViewItem(new string[] {
                         printer.Name,
-                        printer.Address.ToString()
+                        printer.Address.ToString(),
+                        printer.Feedback
                     })
                     {
-                        ImageIndex = (int)printer.Status
+                        ImageIndex = (int)printer.Status,
+                        UseItemStyleForSubItems = false
                     };
+                    item.SubItems[1].ForeColor = Color.DimGray;
                     InvokeAddItem(item);
                     break;
                 case NotifyCollectionChangedAction.Remove:
@@ -358,10 +363,32 @@ namespace CLNPrintMonitor.Controller
         /// <param name="e"></param>
         private void ListViewClickHandler(object sender, MouseEventArgs e)
         {
-            MouseEventArgs me = (MouseEventArgs)e;
+            /*MouseEventArgs me = (MouseEventArgs)e;
             if (me != null && me.Button == MouseButtons.Right && this.lvwMain.FocusedItem.Bounds.Contains(me.Location))
             {
+                cmsListViewItem.Items[0].Enabled = true;
                 cmsListViewItem.Show(Cursor.Position);
+            }*/
+            if (e.Button == MouseButtons.Right)
+            {
+                ListViewHitTestInfo info = this.lvwMain.HitTest(e.X, e.Y); // or e.Location
+                if (info.Item != null)
+                {
+                    Printer current = Helpers.FindPrinter(this.printers, info.Item.SubItems[1].Text);
+                    if(current.Status == StatusIcon.Offline)
+                    {
+                        cmsListViewItem.Items[0].Enabled = false;
+                        cmsListViewItem.Show(this.lvwMain, new Point(e.X, e.Y));
+
+                    } else
+                    {
+                        cmsListViewItem.Items[0].Enabled = true;
+                        cmsListViewItem.Show(this.lvwMain, new Point(e.X, e.Y));
+                    }
+                } else
+                {
+                    cmsNonListViewItem.Show(this.lvwMain, new Point(e.X, e.Y));
+                }
             }
         }
 
@@ -473,21 +500,91 @@ namespace CLNPrintMonitor.Controller
         {
             if (this.WindowState == FormWindowState.Minimized && old != printer.Status)
             {
-                switch (printer.Status)
+                switch (printer)
                 {
-                    case StatusIcon.Ink0:
-                        this.nfiNotify.BalloonTipIcon = ToolTipIcon.Info;
-                        this.nfiNotify.BalloonTipTitle = Resources.TonerWarning;
-                        this.nfiNotify.BalloonTipText = Resources.NotifyIconText + printer.Address + Resources.NotifyIconNoToner;
-                        this.nfiNotify.ShowBalloonTip(60);
+                    case var a when a.Ink is 0:
+                        Helpers.Notify(
+                            this.nfiNotify,
+                            a,
+                            ToolTipIcon.Warning,
+                            a.Address.ToString(),
+                            Resources.NotifyIconText + a.Address + Resources.NotifyIconProblem + a.Feedback.ToLower(),
+                            60
+                        );
                         break;
-                    case StatusIcon.Error:
-                        this.nfiNotify.BalloonTipIcon = ToolTipIcon.Error;
-                        this.nfiNotify.BalloonTipTitle = Resources.TonerProblem;
-                        this.nfiNotify.BalloonTipText = Resources.NotifyIconText + printer.Address + Resources.TonerProblem;
-                        this.nfiNotify.ShowBalloonTip(60);
+                    case var b when b.DefaultInput.Status != Resources.Ok:
+                        Helpers.Notify(
+                            this.nfiNotify,
+                            b,
+                            ToolTipIcon.Info,
+                            b.DefaultInput.Name + " da impressora " + b.Address.ToString(),
+                            b.DefaultInput.Name + " da impressora " + b.Address + Resources.NotifyIconProblem + b.DefaultInput.Status.ToLower(),
+                            60
+                        );
+                        break;
+                    case var c when c.DefaultOutput.Status != Resources.Ok:
+                        Helpers.Notify(
+                            this.nfiNotify,
+                            c,
+                            ToolTipIcon.Info,
+                            c.DefaultOutput.Name + " da impressora " + c.Address.ToString(),
+                            c.DefaultInput.Name + " da impressora " + c.Address + Resources.NotifyIconProblem + c.DefaultInput.Status.ToLower(),
+                            60
+                        );
+                        break;
+                    case var d when d.SupplyMF.Status != Resources.Ok:
+                        Helpers.Notify(
+                            this.nfiNotify,
+                            d,
+                            ToolTipIcon.Info,
+                            d.SupplyMF.Name + " da " + d.Address.ToString(),
+                            d.DefaultInput.Name + " da " + d.Address + Resources.NotifyIconProblem + d.DefaultInput.Status.ToLower(),
+                            60
+                        );
+                        break;
+                    case var e when e.Maintenance < 10:
+                        Helpers.Notify(
+                            this.nfiNotify,
+                            e,
+                            ToolTipIcon.Warning,
+                            "Kit de manutenção baixo",
+                            "O kit de manutenção da impressora " + e.Address + " está baixo.",
+                            60
+                        );
+                        break;
+                    case var f when f.Fc < 10:
+                        Helpers.Notify(
+                           this.nfiNotify,
+                           f,
+                           ToolTipIcon.Warning,
+                           "Kit FC baixo",
+                           "O kit FC da impressora " + f.Address + " está baixo.",
+                           60
+                        );
+                        break;
+                    default:
                         break;
                 }
+            }
+        }
+
+        private void SetSubitemColor(ListViewSubItem item, string status)
+        {
+            item.Text = status;
+            switch (item.Text)
+            {
+                case var a when a.Contains("Pronto"):
+                    item.ForeColor = Color.Green;
+                    break;
+                case var b when b.Contains("Economiz."):
+                    item.ForeColor = Color.CornflowerBlue;
+                    break;
+                case var b when b.Contains("Ocupada"):
+                    item.ForeColor = Color.Yellow;
+                    break;
+                default:
+                    item.ForeColor = Color.Red;
+                    break;
             }
         }
     }

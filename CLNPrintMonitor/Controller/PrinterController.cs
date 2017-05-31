@@ -83,6 +83,7 @@ namespace CLNPrintMonitor.Controller
             target.SetProgressBarColor(pgbFc);
             target.SetProgressBarColor(pgbInk);
             target.SetProgressBarColor(pgbMaintenance);
+            target.SetPanelStatus(printer.Feedback);
         }
 
         /// <summary>
@@ -156,5 +157,26 @@ namespace CLNPrintMonitor.Controller
                 Helpers.SavePdfFile(sfdReport.FileName, file);
             }
         }
+
+        private void SetPanelStatus(string status)
+        {
+            this.lblStatus.Text = status;
+            switch (this.lblStatus.Text)
+            {
+                case var a when a.Contains("Pronto"):
+                    pnlStatus.BackColor = Color.FromArgb(195, 230, 200);
+                    break;
+                case var b when b.Contains("Economiz."):
+                    pnlStatus.BackColor = Color.FromArgb(180, 205, 210);
+                    break;
+                case var b when b.Contains("Ocupada"):
+                    pnlStatus.BackColor = Color.FromArgb(255, 250, 215);
+                    break;
+                default:
+                    pnlStatus.BackColor = Color.FromArgb(245, 210, 215);
+                    break;
+            }
+        }
+        
     }
 }

@@ -63,11 +63,15 @@
             this.lblSupplyMfInputCapacity = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.sfdReport = new System.Windows.Forms.SaveFileDialog();
+            this.pnlStatus = new System.Windows.Forms.Panel();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblStatusHeader = new System.Windows.Forms.Label();
             this.gpbInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbStatus)).BeginInit();
             this.grbDefaultInput.SuspendLayout();
             this.gpbOutput.SuspendLayout();
             this.grbSecondaryInput.SuspendLayout();
+            this.pnlStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // gpbInformation
@@ -91,7 +95,7 @@
             this.gpbInformation.Controls.Add(this.lblModelHeader);
             this.gpbInformation.Controls.Add(this.lblIPV4);
             this.gpbInformation.Controls.Add(this.pcbStatus);
-            this.gpbInformation.Location = new System.Drawing.Point(12, 12);
+            this.gpbInformation.Location = new System.Drawing.Point(12, 60);
             this.gpbInformation.Name = "gpbInformation";
             this.gpbInformation.Size = new System.Drawing.Size(442, 280);
             this.gpbInformation.TabIndex = 0;
@@ -292,7 +296,7 @@
             this.grbDefaultInput.Controls.Add(this.lblDefaultInputType);
             this.grbDefaultInput.Controls.Add(this.lblDefaultInputScale);
             this.grbDefaultInput.Controls.Add(this.lblDefaultInputCapacity);
-            this.grbDefaultInput.Location = new System.Drawing.Point(12, 298);
+            this.grbDefaultInput.Location = new System.Drawing.Point(12, 346);
             this.grbDefaultInput.Name = "grbDefaultInput";
             this.grbDefaultInput.Size = new System.Drawing.Size(144, 111);
             this.grbDefaultInput.TabIndex = 1;
@@ -348,7 +352,7 @@
             // 
             this.gpbOutput.Controls.Add(this.lblOuputStatus);
             this.gpbOutput.Controls.Add(this.lblOuputCapacity);
-            this.gpbOutput.Location = new System.Drawing.Point(312, 298);
+            this.gpbOutput.Location = new System.Drawing.Point(312, 346);
             this.gpbOutput.Name = "gpbOutput";
             this.gpbOutput.Size = new System.Drawing.Size(142, 67);
             this.gpbOutput.TabIndex = 3;
@@ -384,7 +388,7 @@
             this.grbSecondaryInput.Controls.Add(this.lblSupplyMfInputScale);
             this.grbSecondaryInput.Controls.Add(this.lblSupplyMfInputType);
             this.grbSecondaryInput.Controls.Add(this.lblSupplyMfInputCapacity);
-            this.grbSecondaryInput.Location = new System.Drawing.Point(162, 298);
+            this.grbSecondaryInput.Location = new System.Drawing.Point(162, 346);
             this.grbSecondaryInput.Name = "grbSecondaryInput";
             this.grbSecondaryInput.Size = new System.Drawing.Size(144, 111);
             this.grbSecondaryInput.TabIndex = 2;
@@ -438,7 +442,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(312, 371);
+            this.button1.Location = new System.Drawing.Point(312, 419);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(142, 37);
             this.button1.TabIndex = 4;
@@ -452,11 +456,41 @@
             this.sfdReport.Filter = "Arquivo PDF|*.pdf";
             this.sfdReport.Title = "Relatório de impressão";
             // 
+            // pnlStatus
+            // 
+            this.pnlStatus.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.pnlStatus.Controls.Add(this.lblStatus);
+            this.pnlStatus.Controls.Add(this.lblStatusHeader);
+            this.pnlStatus.Location = new System.Drawing.Point(13, 13);
+            this.pnlStatus.Name = "pnlStatus";
+            this.pnlStatus.Size = new System.Drawing.Size(441, 41);
+            this.pnlStatus.TabIndex = 5;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(51, 9);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(78, 20);
+            this.lblStatus.TabIndex = 1;
+            this.lblStatus.Text = "STATUS";
+            // 
+            // lblStatusHeader
+            // 
+            this.lblStatusHeader.AutoSize = true;
+            this.lblStatusHeader.Location = new System.Drawing.Point(8, 9);
+            this.lblStatusHeader.Name = "lblStatusHeader";
+            this.lblStatusHeader.Size = new System.Drawing.Size(37, 13);
+            this.lblStatusHeader.TabIndex = 0;
+            this.lblStatusHeader.Text = "Status";
+            // 
             // PrinterController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(466, 420);
+            this.ClientSize = new System.Drawing.Size(466, 467);
+            this.Controls.Add(this.pnlStatus);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.gpbOutput);
             this.Controls.Add(this.grbSecondaryInput);
@@ -476,6 +510,8 @@
             this.gpbOutput.PerformLayout();
             this.grbSecondaryInput.ResumeLayout(false);
             this.grbSecondaryInput.PerformLayout();
+            this.pnlStatus.ResumeLayout(false);
+            this.pnlStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -517,5 +553,8 @@
         private System.Windows.Forms.ProgressBar pgbMaintenance;
         private System.Windows.Forms.ProgressBar pgbFc;
         private System.Windows.Forms.SaveFileDialog sfdReport;
+        private System.Windows.Forms.Panel pnlStatus;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblStatusHeader;
     }
 }

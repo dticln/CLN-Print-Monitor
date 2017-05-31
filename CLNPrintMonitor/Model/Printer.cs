@@ -92,6 +92,7 @@ namespace CLNPrintMonitor.Model
         #region Attributes
         private IPAddress address;
         private string name;
+        private string feedback;
         private string model;
         private string deviceType;
         private string speed;
@@ -107,6 +108,7 @@ namespace CLNPrintMonitor.Model
         private PrinterController controllerUIRelation;
         public IPAddress Address { get => address; }
         public string Name { get => name; set => name = value; }
+        public string Feedback { get => feedback; }
         public string Model { get => model; }
         public string DeviceType { get => deviceType; }
         public string Speed { get => speed; }
@@ -120,6 +122,7 @@ namespace CLNPrintMonitor.Model
         public StatusIcon Status { get => status; }
         public UpdateUIHandler UpdateUIInformation { get => updateUIInformation; set => updateUIInformation = value; }
         public PrinterController ControllerUIRelation { get => controllerUIRelation; set => controllerUIRelation = value; }
+
         public delegate void UpdateUIHandler(PrinterController relation);
         #endregion
 
@@ -229,6 +232,10 @@ namespace CLNPrintMonitor.Model
             {
                 attributes.Add(span.InnerText);
             }
+            foreach (HtmlNode span in searchIn.DocumentNode.SelectNodes("//td[contains(@class, 'statusLine')]"))
+            {
+                attributes.Add(span.InnerText);
+            }
         }
 
         /// <summary>
@@ -259,28 +266,29 @@ namespace CLNPrintMonitor.Model
             try
             {
                 this.model = attributes[0];
-                this.deviceType = attributes[28];
-                this.speed = attributes[30];
-                this.tonerCapacity = attributes[32];
-                this.ink = Helpers.GetInteger(attributes[2]);
-                this.maintenance = Helpers.GetInteger(attributes[34]);
-                this.fc = Helpers.GetInteger(attributes[36]);
+                this.feedback = attributes[1].Replace("&#032;", " ");
+                this.deviceType = attributes[30];
+                this.speed = attributes[32];
+                this.tonerCapacity = attributes[34];
+                this.ink = Helpers.GetInteger(attributes[4]);
+                this.maintenance = Helpers.GetInteger(attributes[36]);
+                this.fc = Helpers.GetInteger(attributes[38]);
                 this.defaultInput = new PaperInput(
-                    attributes[8], 
-                    attributes[9], 
-                    Int32.Parse(attributes[11]), 
+                    attributes[10], 
                     attributes[12], 
-                    attributes[13]);
-                this.supplyMF = new PaperInput(
+                    Int32.Parse(attributes[13]), 
                     attributes[14], 
-                    attributes[15], 
-                    Int32.Parse(attributes[17]), 
-                    attributes[18], 
-                    attributes[19]);
+                    attributes[15]);
+                this.supplyMF = new PaperInput(
+                    attributes[16], 
+                    attributes[17], 
+                    Int32.Parse(attributes[19]), 
+                    attributes[20], 
+                    attributes[21]);
                 this.defaultOutput = new PaperOutput(
-                    attributes[23], 
-                    attributes[24], 
-                    Int32.Parse(attributes[26]));
+                    attributes[25], 
+                    attributes[26], 
+                    Int32.Parse(attributes[28]));
                 this.SetStatusIcon();
                 if(UpdateUIInformation != null)
                 {

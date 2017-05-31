@@ -179,6 +179,14 @@ namespace CLNPrintMonitor.Util
             document.LoadHtml(text);
             return document;
         }
+
+        public static void Notify(NotifyIcon notify, Printer printer, ToolTipIcon icon, String title, String body, int time)
+        {
+            notify.BalloonTipIcon = icon;
+            notify.BalloonTipTitle = title;
+            notify.BalloonTipText = body;
+            notify.ShowBalloonTip(time);
+        }
     }
 
     internal static class NativeMethods
