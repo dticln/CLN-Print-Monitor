@@ -61,6 +61,24 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A impressora já existe.
+        /// </summary>
+        internal static string AlreadyExists {
+            get {
+                return ResourceManager.GetString("AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Já existe uma impressora cadastrada com esse endereço IP..
+        /// </summary>
+        internal static string AlreadyExistsBody {
+            get {
+                return ResourceManager.GetString("AlreadyExistsBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a api_command.
         /// </summary>
         internal static string ApiCommand {
@@ -106,6 +124,15 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Ocupada.
+        /// </summary>
+        internal static string Buzy {
+            get {
+                return ResourceManager.GetString("Buzy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Capacidade de .
         /// </summary>
         internal static string CapacityOf {
@@ -138,6 +165,24 @@ namespace CLNPrintMonitor.Properties {
         internal static string Data {
             get {
                 return ResourceManager.GetString("Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Ops!.
+        /// </summary>
+        internal static string DefaultError {
+            get {
+                return ResourceManager.GetString("DefaultError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Algo não ocorreu como esperado..
+        /// </summary>
+        internal static string DefaultErrorBody {
+            get {
+                return ResourceManager.GetString("DefaultErrorBody", resourceCulture);
             }
         }
         
@@ -292,6 +337,15 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a //td[contains(@class, &apos;statusLine&apos;)].
+        /// </summary>
+        internal static string NodeStatusQuery {
+            get {
+                return ResourceManager.GetString("NodeStatusQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a //td.
         /// </summary>
         internal static string NodeTd {
@@ -401,11 +455,29 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Economiz..
+        /// </summary>
+        internal static string PowerSaving {
+            get {
+                return ResourceManager.GetString("PowerSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Problema na impressora.
         /// </summary>
         internal static string Problem {
             get {
                 return ResourceManager.GetString("Problem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Pronto.
+        /// </summary>
+        internal static string Ready {
+            get {
+                return ResourceManager.GetString("Ready", resourceCulture);
             }
         }
         
@@ -424,6 +496,42 @@ namespace CLNPrintMonitor.Properties {
         internal static string Response {
             get {
                 return ResourceManager.GetString("Response", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a error.
+        /// </summary>
+        internal static string ResponseError {
+            get {
+                return ResourceManager.GetString("ResponseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a success.
+        /// </summary>
+        internal static string ResponseSuccess {
+            get {
+                return ResourceManager.GetString("ResponseSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Falha ao salvar arquivo..
+        /// </summary>
+        internal static string SaveFileError {
+            get {
+                return ResourceManager.GetString("SaveFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível salvar o arquivo. Certifique-se que nenhum outro programa esteja utilizando o mesmo arquivo..
+        /// </summary>
+        internal static string SaveFileErrorBody {
+            get {
+                return ResourceManager.GetString("SaveFileErrorBody", resourceCulture);
             }
         }
         
@@ -469,15 +577,6 @@ namespace CLNPrintMonitor.Properties {
         internal static string StatusUri {
             get {
                 return ResourceManager.GetString("StatusUri", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a success.
-        /// </summary>
-        internal static string Success {
-            get {
-                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
         

@@ -10,6 +10,10 @@ namespace CLNPrintMonitor.Controller
     {
         private List<Printer> printers;
 
+        /// <summary>
+        /// Construtor que recebe uma lista de impressoras
+        /// </summary>
+        /// <param name="printers"></param>
         public ReportController(List<Printer> printers)
         {
             InitializeComponent();
@@ -17,6 +21,9 @@ namespace CLNPrintMonitor.Controller
             CreateCheckboxMembers();
         }
 
+        /// <summary>
+        /// Cria os membros da checkbox de acordo com a lista de impressoras
+        /// </summary>
         public void CreateCheckboxMembers()
         {
             foreach(var printer in this.printers)
@@ -35,13 +42,19 @@ namespace CLNPrintMonitor.Controller
             }
         }
 
+        /// <summary>
+        /// Abre o dialogo de relatório
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShowReportDialog(object sender, System.EventArgs e)
         {
             new Task(() => CreateReport()).Start();
         }
         
         /// <summary>
-        /// REFAZER METODO
+        /// Cria relatório
+        /// Necessita ser reformulada para dar suporte para formatação de arquivo
         /// </summary>
         private async void CreateReport()
         {
@@ -66,7 +79,7 @@ namespace CLNPrintMonitor.Controller
                 }
                 if(buffer != "")
                 {
-                    byte[] file = Helpers.SimplePDFReport(Helpers.CreateDocument(buffer));
+                    byte[] file = Helpers.CreatePDF(Helpers.CreateDocument(buffer));
                     Helpers.SavePdfFile(sfdReport.FileName,file);
                 }
             }

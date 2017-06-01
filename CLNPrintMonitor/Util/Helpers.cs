@@ -22,7 +22,7 @@ namespace CLNPrintMonitor.Util
         public static object HttpUtility { get; private set; }
 
         /// <summary>
-        /// 
+        /// Coloca a string em formato adequado para utilização
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -37,9 +37,9 @@ namespace CLNPrintMonitor.Util
         }
 
         /// <summary>
-        /// 
+        /// Recupera valor inteiro de uma string
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">String com um número</param>
         /// <returns></returns>
         public static int GetInteger(string value)
         {
@@ -50,12 +50,12 @@ namespace CLNPrintMonitor.Util
             }
             return 0;
         }
-
+        
         /// <summary>
-        /// 
+        /// Modifica a cor da barra de progresso
         /// </summary>
-        /// <param name="pBar"></param>
-        /// <param name="state"></param>
+        /// <param name="pBar">Barra de progresso</param>
+        /// <param name="state">Id do status</param>
         public static void ModifyProgressBarColor(ProgressBar pBar, int state)
         {
             if (!pBar.IsDisposed)
@@ -65,22 +65,28 @@ namespace CLNPrintMonitor.Util
         }
 
         /// <summary>
-        /// Send a asynchronous request and retrives the response data
+        /// Envia requisição HTTP por GET
         /// </summary>
-        /// <param name="url">Target url</param>
-        /// <returns>Page data</returns>
-        public static async Task<string> SendHttpRequest(string url)
+        /// <param name="url">URL desejada</param>
+        /// <param name="isoCharset">A requisição é para uma página com caracteres ISO?</param>
+        /// <returns></returns>
+        public static async Task<string> SendHttpRequest(string url, bool isoCharset = false)
         {
             HttpClient client = new HttpClient();
-            return await client.GetStringAsync(url);
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (isoCharset)
+            {
+                response.Content.Headers.ContentType.CharSet = "ISO-8859-1";
+            }
+            return await response.Content.ReadAsStringAsync();
         }
 
         /// <summary>
-        /// 
+        /// Envia requisição HTTP por POST
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="param"></param>
-        /// <returns></returns>
+        /// <param name="url">URL desejada</param>
+        /// <param name="param">Parametros POST em formato chave/valor</param>
+        /// <returns>String do HTML de resposta</returns>
         public static async Task<string> SendHttpPostRequest(string url, Dictionary<string,string> param)
         {
             HttpClient client = new HttpClient();
@@ -89,26 +95,13 @@ namespace CLNPrintMonitor.Util
             return await response.Content.ReadAsStringAsync();
 
         }
-
+        
         /// <summary>
-        /// 
+        /// Procura uma impressora em uma lista de impressoras por IPV4
         /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        public static async Task<string> SendHttpRequestIso(string url)
-        {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(url);
-            response.Content.Headers.ContentType.CharSet = "ISO-8859-1";
-            return await response.Content.ReadAsStringAsync();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="printers"></param>
-        /// <param name="ipv4"></param>
-        /// <returns></returns>
+        /// <param name="printers">Coleção de impressoras</param>
+        /// <param name="ipv4">Ip da impressora</param>
+        /// <returns>Impressora</returns>
         public static Printer FindPrinter(Collection<Printer> printers, string ipv4)
         {
             foreach (Printer item in printers)
@@ -122,10 +115,10 @@ namespace CLNPrintMonitor.Util
         }
 
         /// <summary>
-        /// 
+        /// Serializa um objeto Dictionary em formato de request 
         /// </summary>
-        /// <param name="dict"></param>
-        /// <returns></returns>
+        /// <param name="dict">Dados</param>
+        /// <returns>Formato de requisição web</returns>
         private static string DictionaryToString(Dictionary<string, string> dict)
         {
             StringBuilder builder = new StringBuilder();
@@ -136,6 +129,12 @@ namespace CLNPrintMonitor.Util
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Salva um PDF em formato byte[] em arquivo
+        /// </summary>
+        /// <param name="path">Nome do arquivo</param>
+        /// <param name="stream">PDF</param>
+        /// <returns>Resposta</returns>
         public static bool SavePdfFile(string path, byte[] stream)
         {
             try
@@ -146,12 +145,17 @@ namespace CLNPrintMonitor.Util
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(), "Falha ao salvar arquivo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.SaveFileErrorBody, Resources.SaveFileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return false;
         }
         
-        public static byte[] SimplePDFReport(HtmlAgilityPack.HtmlDocument html)
+        /// <summary>
+        /// Gera PDF a partir de um documento HtmlDocument
+        /// </summary>
+        /// <param name="html">HTML</param>
+        /// <returns>PDF em byte[]</returns>
+        public static byte[] CreatePDF(HtmlAgilityPack.HtmlDocument html)
         {
             MemoryStream msOutput = new MemoryStream();
             TextReader reader = new StringReader(html.DocumentNode.InnerHtml);
@@ -166,13 +170,12 @@ namespace CLNPrintMonitor.Util
             document.Close();
             return msOutput.ToArray();
         }
-
-
+        
         /// <summary>
-        /// Create a HtmlDocument from string
+        /// Cria um HtmlDocument a partir de uma string
         /// </summary>
-        /// <param name="text">Data from request</param>
-        /// <returns>A HtmlDocument from text</returns>
+        /// <param name="text">String HTML</param>
+        /// <returns>Resultado HtmlDocument</returns>
         public static HtmlAgilityPack.HtmlDocument CreateDocument(string text)
         {
             HtmlAgilityPack.HtmlDocument document = new HtmlAgilityPack.HtmlDocument();
@@ -180,7 +183,15 @@ namespace CLNPrintMonitor.Util
             return document;
         }
 
-        public static void Notify(NotifyIcon notify, ToolTipIcon icon, String title, String body, int time)
+        /// <summary>
+        /// Envia notificação para usuário pelo Notify
+        /// </summary>
+        /// <param name="notify">Notify que será modificado</param>
+        /// <param name="title">Título da notificação</param>
+        /// <param name="body">Corpo da notificação</param>
+        /// <param name="icon">Icone (opcional)</param>
+        /// <param name="time">Tempo que será visualizado (opcional)</param>
+        public static void Notify(NotifyIcon notify, String title, String body, ToolTipIcon icon = ToolTipIcon.None, int time = 60)
         {
             notify.BalloonTipIcon = icon;
             notify.BalloonTipTitle = title;
@@ -188,15 +199,37 @@ namespace CLNPrintMonitor.Util
             notify.ShowBalloonTip(time);
         }
 
-
+        /// <summary>
+        /// Exibe mensagem de erro de conexão
+        /// </summary>
         public static void ConnectionErrorMessage()
         {
-            MessageBox.Show(Resources.ConnectionErrorBody, Resources.ConnectionErrorHeader, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            MessageBox.Show(Resources.ConnectionErrorBody, Resources.ConnectionErrorHeader, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+
+        /// <summary>
+        /// Exibe mensagem padrão de erro
+        /// </summary>
+        public static void DefaultErrorMessage()
+        {
+            MessageBox.Show(Resources.DefaultErrorBody, Resources.DefaultError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>
+        /// Exibe mensagem para item já existente
+        /// </summary>
+        public static void AlreadyExistsMessage()
+        {
+            MessageBox.Show(Resources.AlreadyExistsBody, Resources.AlreadyExists, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
     }
 
     internal static class NativeMethods
     {
+        /// <summary>
+        /// Importa DLL do sistema para modificação da cor da progressbar
+        /// </summary>
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
         internal static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr w, IntPtr l);
     }

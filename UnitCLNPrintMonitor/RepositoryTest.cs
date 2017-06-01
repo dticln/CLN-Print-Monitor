@@ -18,7 +18,7 @@ namespace UnitCLNPrintMonitor
         }
 
         private static Repository rep;
-        private const string ipv4 = "143.54.196.241";
+        private const string ipv4 = "255.255.255.255";
         private TestContext testContextInstance;
 
         public static Repository Rep { get => rep; set => rep = value; }

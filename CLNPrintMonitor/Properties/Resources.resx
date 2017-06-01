@@ -223,7 +223,7 @@
   <data name="StatusUri" xml:space="preserve">
     <value>/cgi-bin/dynamic/printer/PrinterStatus.html</value>
   </data>
-  <data name="Success" xml:space="preserve">
+  <data name="ResponseSuccess" xml:space="preserve">
     <value>success</value>
   </data>
   <data name="Problem" xml:space="preserve">
@@ -264,5 +264,38 @@
   </data>
   <data name="OfPrinter" xml:space="preserve">
     <value> da impressora </value>
+  </data>
+  <data name="AlreadyExists" xml:space="preserve">
+    <value>A impressora já existe</value>
+  </data>
+  <data name="AlreadyExistsBody" xml:space="preserve">
+    <value>Já existe uma impressora cadastrada com esse endereço IP.</value>
+  </data>
+  <data name="Buzy" xml:space="preserve">
+    <value>Ocupada</value>
+  </data>
+  <data name="DefaultError" xml:space="preserve">
+    <value>Ops!</value>
+  </data>
+  <data name="DefaultErrorBody" xml:space="preserve">
+    <value>Algo não ocorreu como esperado.</value>
+  </data>
+  <data name="NodeStatusQuery" xml:space="preserve">
+    <value>//td[contains(@class, 'statusLine')]</value>
+  </data>
+  <data name="PowerSaving" xml:space="preserve">
+    <value>Economiz.</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Pronto</value>
+  </data>
+  <data name="ResponseError" xml:space="preserve">
+    <value>error</value>
+  </data>
+  <data name="SaveFileError" xml:space="preserve">
+    <value>Falha ao salvar arquivo.</value>
+  </data>
+  <data name="SaveFileErrorBody" xml:space="preserve">
+    <value>Não foi possível salvar o arquivo. Certifique-se que nenhum outro programa esteja utilizando o mesmo arquivo.</value>
   </data>
 </root>

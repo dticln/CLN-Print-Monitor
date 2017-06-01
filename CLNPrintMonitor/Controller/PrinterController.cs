@@ -1,17 +1,10 @@
 ﻿using CLNPrintMonitor.Model;
 using CLNPrintMonitor.Properties;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using CLNPrintMonitor.Util;
-using System.IO;
 
 namespace CLNPrintMonitor.Controller
 {
@@ -21,9 +14,9 @@ namespace CLNPrintMonitor.Controller
         private Printer printer;
 
         /// <summary>
-        /// 
+        /// Método construtor do formulário da impressora
         /// </summary>
-        /// <param name="printer"></param>
+        /// <param name="printer">Impressora alvo</param>
         public PrinterController(Printer printer)
         {
             InitializeComponent();
@@ -31,9 +24,9 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Atualiza referencia de impressora, alterando os dados do formulário
         /// </summary>
-        /// <param name="printer"></param>
+        /// <param name="printer">Impressora alvo</param>
         public void UpdatePrinterReference(Printer printer)
         {
             this.printer = printer;
@@ -43,7 +36,7 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Atualiza os campos do formulário na UIThread
         /// </summary>
         /// <param name="target"></param>
         public void InvokeUpdateUI(PrinterController target)
@@ -77,7 +70,6 @@ namespace CLNPrintMonitor.Controller
             target.lblSupplyMfInputScale.Text = Resources.Size + printer.SupplyMF.Scale;
             target.lblSupplyMfInputType.Text = printer.SupplyMF.Type;
             target.lblSupplyMfStatus.Text = printer.SupplyMF.Status;
-            //target.gpbOutput.Text = printer.DefaultOutput.Name;
             target.lblOuputCapacity.Text = Resources.CapacityOf + printer.DefaultOutput.Capacity.ToString() + Resources.Sheets;
             target.lblOuputStatus.Text = printer.DefaultOutput.Status;
             target.SetProgressBarColor(pgbFc);
@@ -87,11 +79,11 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Recupera a imagem do item de acordo o Enum StatusIcon
         /// </summary>
-        /// <param name="icon"></param>
-        /// <returns></returns>
-        public static Image GetStatusImage(StatusIcon icon)
+        /// <param name="icon">Enum do icone</param>
+        /// <returns>Imagem do icone</returns>
+        private static Image GetStatusImage(StatusIcon icon)
         {
             Image image = null;
             switch (icon)
@@ -122,7 +114,7 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Modifica a cor da barra de processo de acordo com o seu nível
         /// </summary>
         /// <param name="pgb"></param>
         internal void SetProgressBarColor(ProgressBar pgb)
@@ -138,17 +130,16 @@ namespace CLNPrintMonitor.Controller
                 Helpers.ModifyProgressBarColor(pgb, 3);
             }
         }
-
-        private void ShowReportDialog(object sender, EventArgs e)
-        {
-            new Task(() => ExecuteReportDialog()).Start();
-        }
-
-        private async void ExecuteReportDialog()
+        
+        /// <summary>
+        /// Chama o dialogo de geração de relatório
+        /// Pode ser invocado mesmo fora da UIThread
+        /// </summary>
+        private async void InvokeReportDialog()
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { ExecuteReportDialog(); });
+                Invoke((MethodInvoker)delegate { InvokeReportDialog(); });
                 return;
             }
             if (sfdReport.ShowDialog() == DialogResult.OK)
@@ -158,18 +149,22 @@ namespace CLNPrintMonitor.Controller
             }
         }
 
+        /// <summary>
+        /// Modifica a cor do painel de Status de acordo com o texto
+        /// </summary>
+        /// <param name="status"></param>
         private void SetPanelStatus(string status)
         {
             this.lblStatus.Text = status;
             switch (this.lblStatus.Text)
             {
-                case var a when a.Contains("Pronto"):
+                case var a when a.Contains(Resources.Ready):
                     pnlStatus.BackColor = Color.FromArgb(195, 230, 200);
                     break;
-                case var b when b.Contains("Economiz."):
+                case var b when b.Contains(Resources.PowerSaving):
                     pnlStatus.BackColor = Color.FromArgb(180, 205, 210);
                     break;
-                case var b when b.Contains("Ocupada"):
+                case var b when b.Contains(Resources.Buzy):
                     pnlStatus.BackColor = Color.FromArgb(255, 250, 215);
                     break;
                 default:
@@ -178,5 +173,15 @@ namespace CLNPrintMonitor.Controller
             }
         }
         
+        /// <summary>
+        /// Abre a ação de geração de relatório em outra thread
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowReportDialog(object sender, EventArgs e)
+        {
+            new Task(() => InvokeReportDialog()).Start();
+        }
+
     }
 }

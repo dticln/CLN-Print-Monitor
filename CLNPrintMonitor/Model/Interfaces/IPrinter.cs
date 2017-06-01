@@ -9,8 +9,30 @@ namespace CLNPrintMonitor.Model.Interfaces
 {
     interface IPrinter
     {
+        /// <summary>
+        /// A impressora está online?
+        /// </summary>
+        /// <returns></returns>
         bool IsOnline();
+
+        /// <summary>
+        /// Recupera as informações da impressora
+        /// </summary>
+        /// <returns>Conseguiu</returns>
         Task<bool> GetInformationFromDevice();
-        Task<byte[]> GetReportFromDevice(); 
+
+        /// <summary>
+        /// Recupera um PDF de relatório da impressora
+        /// </summary>
+        /// <returns></returns>
+        Task<byte[]> GetReportFromDevice();
+
+
+        /// <summary>
+        /// Recupra um HTML de relatório da impressora
+        /// </summary>
+        /// <returns></returns>
+        Task<string> GetRawReportFromDevice();
+
     }
 }

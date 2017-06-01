@@ -1,7 +1,6 @@
 ﻿using CLNPrintMonitor.Model;
 using System;
 using System.Windows.Forms;
-using CLNPrintMonitor.Controller;
 using System.Threading.Tasks;
 using CLNPrintMonitor.Persistence;
 
@@ -13,7 +12,7 @@ namespace CLNPrintMonitor.Controller
         private Main context;
 
         /// <summary>
-        /// 
+        /// Construtor do formulário, recebe o contexto de execução
         /// </summary>
         /// <param name="context"></param>
         /// <param name="printer"></param>
@@ -29,7 +28,7 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Executa a tarefa de modificação do nome da impressora em um thread distinta 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -46,11 +45,11 @@ namespace CLNPrintMonitor.Controller
         }
         
         /// <summary>
-        /// 
+        /// Envia solicitação para API para renomear impressora
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="printer"></param>
-        /// <param name="name"></param>
+        /// <param name="context">Contexto de execução</param>
+        /// <param name="printer">Impressora alvo</param>
+        /// <param name="name">Novo nome</param>
         private async void ExecuteRenameTask(Main context, Printer printer, string name)
         {
             try
@@ -75,7 +74,7 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Fecha form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -85,7 +84,7 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Realiza o fechamento do formulário por outra um thread diferente da UIThread
         /// </summary>
         private void InvokeClose()
         {
@@ -98,7 +97,7 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Bloqueia campos do formulário por outra UIThread
         /// </summary>
         private void InvokeLock()
         {
@@ -113,7 +112,7 @@ namespace CLNPrintMonitor.Controller
         }
 
         /// <summary>
-        /// 
+        /// Desbloqueia campos do formulário por outra UIThread
         /// </summary>
         private void InvokeUnlock()
         {
@@ -126,5 +125,6 @@ namespace CLNPrintMonitor.Controller
             this.btnRename.Enabled = true;
             this.txbName.Enabled = true;
         }
+
     }
 }

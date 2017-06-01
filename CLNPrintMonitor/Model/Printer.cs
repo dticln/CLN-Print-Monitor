@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace CLNPrintMonitor.Model
 {
+
     /// <summary>
-    /// Struct for printer basic paper input
+    /// Struct que representa uma entrada de papel da impressora
     /// </summary>
     public struct PaperInput 
     {
@@ -39,7 +40,7 @@ namespace CLNPrintMonitor.Model
     };
 
     /// <summary>
-    /// Struct for printer basic paper output
+    /// Struct que representa uma bandeja de saída de papel da impressora
     /// </summary>
     public struct PaperOutput 
     {
@@ -60,7 +61,7 @@ namespace CLNPrintMonitor.Model
     };
 
     /// <summary>
-    /// Enum for Status managment and UI integration
+    /// Enum que representa um status da impressora
     /// </summary>
     public enum StatusIcon {
         Ink0 = 0,
@@ -73,23 +74,27 @@ namespace CLNPrintMonitor.Model
     };
 
     /// <summary>
-    /// Represents a printer
+    /// Representa uma impressora
     /// </summary>
     public class Printer : IPrinter, ICloneable
     {
         #region Constants
+
         internal static string OK = Resources.Ok;
         internal static string HTTP = Resources.Http;
         internal static string TOPBAR_URI = Resources.TopbarUri;
         internal static string STATUS_URI = Resources.StatusUri;
         internal static string REPORT_URI = Resources.ReportUri;
         internal static string NODE_QUERY = Resources.NodeQuery;
+        internal static string NODE_STATUS_QUERY = Resources.NodeStatusQuery;
         internal static string LOW_TONER_WARNING = Resources.NodeQuery;
         internal static string UNKNOWN_WARNING = Resources.UnknownWarning;
         internal static string NODE_TD = Resources.NodeTd;
+
         #endregion
 
         #region Attributes
+
         private IPAddress address;
         private string name;
         private string feedback;
@@ -122,15 +127,15 @@ namespace CLNPrintMonitor.Model
         public StatusIcon Status { get => status; }
         public UpdateUIHandler UpdateUIInformation { get => updateUIInformation; set => updateUIInformation = value; }
         public PrinterController ControllerUIRelation { get => controllerUIRelation; set => controllerUIRelation = value; }
-
         public delegate void UpdateUIHandler(PrinterController relation);
+
         #endregion
 
         /// <summary>
-        /// Basic constructor for a printer 
+        /// Construtor da impressora
         /// </summary>
-        /// <param name="name">Name of printer</param>
-        /// <param name="inet">IPV4 address object</param>
+        /// <param name="name">Nome da impressora</param>
+        /// <param name="inet">IPV4 da impressora</param>
         public Printer(string name, IPAddress inet)
         {
             this.name = name;
@@ -139,9 +144,10 @@ namespace CLNPrintMonitor.Model
         }
 
         /// <summary>
-        /// Returns if printers is online using PingReply
+        /// Manda um pacote PING para a impressora
+        /// Recuperando se ela está online ou não
         /// </summary>
-        /// <returns>An anwser about the availablity of the device</returns>
+        /// <returns>Resposta quanto a disponibilidade do host</returns>
         public bool IsOnline()
         {
             PingReply response = new Ping().Send(this.address);
@@ -149,11 +155,10 @@ namespace CLNPrintMonitor.Model
         }
 
         /// <summary>
-        /// Performs an asynchronous request for standard Lexmark pages, 
-        /// retrieves printer information and 
-        /// bind the data in Printer object
+        /// Realiza uma requisição assincrona para uma página Lexmark,
+        /// recuperando as informações e inflando os dados de status no objeto
         /// </summary>
-        /// <returns>Execution response</returns>
+        /// <returns>Se a execução foi completa</returns>
         public async Task<bool> GetInformationFromDevice()
         {
             List<string> list = new List<string>();
@@ -179,70 +184,76 @@ namespace CLNPrintMonitor.Model
             return this.SetInformations(list);
         }
 
-
+        /// <summary>
+        /// Recupera um arquivo PDF com os dados do relatório da impressora
+        /// por meio de uma requisição assincrona
+        /// </summary>
+        /// <returns>Arquivo PDF</returns>
         public async Task<byte[]> GetReportFromDevice()
         {
             string response;
             try
             {
-                response = await Helpers.SendHttpRequestIso(Printer.HTTP + this.address + Printer.REPORT_URI);
+                response = await Helpers.SendHttpRequest(Printer.HTTP + this.address + Printer.REPORT_URI, true);
             }
             catch (Exception)
             {
                 return null;
             }
             HtmlDocument html = Helpers.CreateDocument(response);
-            return Helpers.SimplePDFReport(html);
+            return Helpers.CreatePDF(html);
         }
 
+        /// <summary>
+        /// Recupera um arquivo HTML com os dados do relatório da impressora 
+        /// por meio de uma requisição assincrona
+        /// </summary>
+        /// <returns>HTML em formato string</returns>
         public async Task<string> GetRawReportFromDevice()
         {
             string response;
             try
             {
-                response = await Helpers.SendHttpRequestIso(Printer.HTTP + this.address + Printer.REPORT_URI);
+                response = await Helpers.SendHttpRequest(Printer.HTTP + this.address + Printer.REPORT_URI, true);
             }
             catch (Exception)
             {
-                return "";
+                return String.Empty;
             }
             return response;
         }
-
-
-        /// <summary>
-        /// Remove warnings strings from attributes list
-        /// </summary>
-        /// <param name="attributes">Extrated attributes from page</param>
-        private void RemoveWarning(List<string> attributes)
-        {
-            attributes.RemoveAll(item => item == Printer.LOW_TONER_WARNING);
-            attributes.RemoveAll(item => item == Printer.UNKNOWN_WARNING);
-        }
-
         
         /// <summary>
-        /// Search for printer information inside HtmlDocument
+        /// Remove avisos da lista dos atributos
         /// </summary>
-        /// <param name="attributes">Extrated attributes from page</param>
-        /// <param name="searchIn">Where it will be searched</param>
+        /// <param name="attributes">Atributos extraídos da página web</param>
+        private void RemoveWarning(List<string> attributes)
+        {
+            attributes.RemoveAll(item => item == Printer.LOW_TONER_WARNING || item == Printer.UNKNOWN_WARNING);
+        }
+        
+        /// <summary>
+        /// Procura pelas informações ESPECÍFICAS da impressora dentro do arquivo HTML
+        /// </summary>
+        /// <param name="attributes">Lista de atributos</param>
+        /// <param name="searchIn">HTML onde os dados serão extraídos</param>
         private void SearchForPrinterInformation(List<string> attributes, HtmlDocument searchIn)
         {
             foreach (HtmlNode span in searchIn.DocumentNode.SelectNodes(Printer.NODE_QUERY))
             {
                 attributes.Add(span.InnerText);
             }
-            foreach (HtmlNode span in searchIn.DocumentNode.SelectNodes("//td[contains(@class, 'statusLine')]"))
+            foreach (HtmlNode span in searchIn.DocumentNode.SelectNodes(Printer.NODE_STATUS_QUERY))
             {
                 attributes.Add(span.InnerText);
             }
         }
 
         /// <summary>
-        /// Search for printer status inside HtmlDocument
+        /// Procura por dados de status da impressora dentro do arquivo HTML
         /// </summary>
-        /// <param name="attributes">Extrated attributes from page</param>
-        /// <param name="searchIn">Where it will be searched</param>
+        /// <param name="attributes">Lista de atributos</param>
+        /// <param name="searchIn">HTML onde os dados serão extraídos</param>
         private void SearchForPrinterStatus(List<string> attributes, HtmlDocument searchIn)
         {
             foreach (HtmlNode td in searchIn.DocumentNode.SelectNodes(NODE_TD))
@@ -256,10 +267,11 @@ namespace CLNPrintMonitor.Model
         }
 
         /// <summary>
-        /// Bind informations in this Printer object 
+        /// A partir do arquivo de atributos
+        /// infla os dados no objeto
         /// </summary>
-        /// <param name="attributes">Extrated attributes</param>
-        /// <returns>Response</returns>
+        /// <param name="attributes">Atributos extraídos</param>
+        /// <returns>Respostas</returns>
         private bool SetInformations(List<string> attributes)
         {
             this.RemoveWarning(attributes);
@@ -302,7 +314,7 @@ namespace CLNPrintMonitor.Model
         }
 
         /// <summary>
-        /// Set the status icon using the printer attributes
+        /// Define o icone de status de acordo com determinadas conbinações de atributos
         /// </summary>
         private void SetStatusIcon()
         {
@@ -337,10 +349,14 @@ namespace CLNPrintMonitor.Model
             }
         }
 
-
+        /// <summary>
+        /// Realiza a clonagem do objeto 
+        /// </summary>
+        /// <returns>Novo objeto identico</returns>
         public object Clone()
         {
             return this.MemberwiseClone();
         }
+
     }
 }

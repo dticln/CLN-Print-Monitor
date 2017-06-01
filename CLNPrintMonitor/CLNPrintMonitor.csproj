@@ -159,6 +159,9 @@
     <EmbeddedResource Include="Controller\PrinterController.resx">
       <DependentUpon>PrinterController.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controller\RenameController.resx">
+      <DependentUpon>RenameController.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controller\ReportController.resx">
       <DependentUpon>ReportController.cs</DependentUpon>
     </EmbeddedResource>

@@ -34,7 +34,12 @@ namespace CLNPrintMonitor.Controller
             InitializeComponent();
             this.printers = new ObservableCollection<Printer>();
             /// Adicionar o novo Handler para itens duplicados
-            Repository.GetInstance.ConnectionErroHandler += new Repository.ConnectionErrorUIHandler(Helpers.ConnectionErrorMessage);
+            Repository rep = Repository.GetInstance;
+
+            rep.ConnectionErrorHandler += new Repository.UIHandler(Helpers.ConnectionErrorMessage);
+            rep.DefaultErrorHandler += new Repository.UIHandler(Helpers.DefaultErrorMessage);
+            rep.AlreadyExistsHandler += new Repository.UIHandler(Helpers.AlreadyExistsMessage);
+
             this.printers.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
             this.lvwMain.LargeImageList = new ImageList()
             {
@@ -52,7 +57,7 @@ namespace CLNPrintMonitor.Controller
             this.GetPrintersFromRemote();
         }
         
-        #region Invoke methods for UIThread
+        #region Métodos Invoke
 
         /// <summary>
         /// Realiza a adição de um item na list view de impressoras
@@ -153,7 +158,7 @@ namespace CLNPrintMonitor.Controller
 
         #endregion
 
-        #region Event handlers 
+        #region Manipulador de eventos
 
         /// <summary>
         /// Evento que trata o click no botão de "Adicionar impressora"
@@ -383,10 +388,8 @@ namespace CLNPrintMonitor.Controller
                 this.nfiNotify.Visible = true;
                 Helpers.Notify(
                     this.nfiNotify,
-                    ToolTipIcon.None,
                     Resources.MonitorAgent,
-                    Resources.NotifyEnabled,
-                    DEFAULT_NOTIFY_TIME
+                    Resources.NotifyEnabled
                 );
                 if (this.childrenForm != null && !this.childrenForm.IsDisposed)
                 {
@@ -455,6 +458,8 @@ namespace CLNPrintMonitor.Controller
 
         #endregion
 
+        #region Proposito Geral
+
         /// <summary>
         /// Verifica impressora e, caso haja alteração, notifica usuário e atualiza a lista
         /// </summary>
@@ -500,55 +505,49 @@ namespace CLNPrintMonitor.Controller
                     case var a when a.Ink is 0:
                         Helpers.Notify(
                             this.nfiNotify,
-                            ToolTipIcon.Warning,
                             a.Address.ToString(),
                             Resources.NotifyIconText + a.Address + Resources.NotifyIconProblem + a.Feedback.ToLower(),
-                            DEFAULT_NOTIFY_TIME
+                            ToolTipIcon.Warning
                         );
                         break;
                     case var b when b.DefaultInput.Status != Resources.Ok:
                         Helpers.Notify(
                             this.nfiNotify,
-                            ToolTipIcon.Info,
                             b.DefaultInput.Name + Resources.OfPrinter + b.Address.ToString(),
                             b.DefaultInput.Name + Resources.OfPrinter + b.Address + Resources.NotifyIconProblem + b.DefaultInput.Status.ToLower(),
-                            DEFAULT_NOTIFY_TIME
+                            ToolTipIcon.Info
                         );
                         break;
                     case var c when c.DefaultOutput.Status != Resources.Ok:
                         Helpers.Notify(
                             this.nfiNotify,
-                            ToolTipIcon.Info,
                             c.DefaultOutput.Name + Resources.OfPrinter + c.Address.ToString(),
                             c.DefaultInput.Name + Resources.OfPrinter + c.Address + Resources.NotifyIconProblem + c.DefaultInput.Status.ToLower(),
-                            DEFAULT_NOTIFY_TIME
+                            ToolTipIcon.Info
                         );
                         break;
                     case var d when d.SupplyMF.Status != Resources.Ok:
                         Helpers.Notify(
                             this.nfiNotify,
-                            ToolTipIcon.Info,
                             d.SupplyMF.Name + Resources.OfPrinter + d.Address.ToString(),
                             d.DefaultInput.Name + Resources.OfPrinter + d.Address + Resources.NotifyIconProblem + d.DefaultInput.Status.ToLower(),
-                            DEFAULT_NOTIFY_TIME
+                            ToolTipIcon.Info
                         );
                         break;
                     case var e when e.Maintenance < 10:
                         Helpers.Notify(
                             this.nfiNotify,
-                            ToolTipIcon.Warning,
                             Resources.NotifyLowMaintenance,
                             Resources.NotifyLowMaintenanceBody + e.Address + Resources.NotifyLow,
-                            DEFAULT_NOTIFY_TIME
+                            ToolTipIcon.Warning
                         );
                         break;
                     case var f when f.Fc < 10:
                         Helpers.Notify(
                            this.nfiNotify,
-                           ToolTipIcon.Warning,
                            Resources.NotifyLowFC,
                            Resources.NotifyLowFCBody + f.Address + Resources.NotifyLow,
-                           DEFAULT_NOTIFY_TIME
+                           ToolTipIcon.Warning
                         );
                         break;
                     default:
@@ -567,13 +566,13 @@ namespace CLNPrintMonitor.Controller
             item.Text = status;
             switch (item.Text)
             {
-                case var a when a.Contains("Pronto"):
+                case var a when a.Contains(Resources.Ready):
                     item.ForeColor = Color.Green;
                     break;
-                case var b when b.Contains("Economiz."):
+                case var b when b.Contains(Resources.PowerSaving):
                     item.ForeColor = Color.CornflowerBlue;
                     break;
-                case var b when b.Contains("Ocupada"):
+                case var b when b.Contains(Resources.Buzy):
                     item.ForeColor = Color.Yellow;
                     break;
                 default:
@@ -581,6 +580,8 @@ namespace CLNPrintMonitor.Controller
                     break;
             }
         }
-        
+
+        #endregion
+
     }
 }
