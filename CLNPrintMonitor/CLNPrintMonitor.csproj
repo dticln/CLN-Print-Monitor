@@ -210,7 +210,6 @@
     <None Include="Resources\error.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
     <Content Include="printer.ico" />
     <Content Include="Resources\printer.ico" />
   </ItemGroup>

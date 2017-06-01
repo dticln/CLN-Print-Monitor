@@ -265,7 +265,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a CLNPrinterMonitor Agent .
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Print Monitor Agent.
         /// </summary>
         internal static string MonitorAgent {
             get {
@@ -301,6 +301,15 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O Print Monitor Agent está rodando em segundo plano..
+        /// </summary>
+        internal static string NotifyEnabled {
+            get {
+                return ResourceManager.GetString("NotifyEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a  necessita de atenção: .
         /// </summary>
         internal static string NotifyIconProblem {
@@ -319,12 +328,66 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a está baixo..
+        /// </summary>
+        internal static string NotifyLow {
+            get {
+                return ResourceManager.GetString("NotifyLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Kit FC baixo.
+        /// </summary>
+        internal static string NotifyLowFC {
+            get {
+                return ResourceManager.GetString("NotifyLowFC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O kit FC da impressora .
+        /// </summary>
+        internal static string NotifyLowFCBody {
+            get {
+                return ResourceManager.GetString("NotifyLowFCBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Kit de manutenção baixo.
+        /// </summary>
+        internal static string NotifyLowMaintenance {
+            get {
+                return ResourceManager.GetString("NotifyLowMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O kit de manutenção da impressora .
+        /// </summary>
+        internal static string NotifyLowMaintenanceBody {
+            get {
+                return ResourceManager.GetString("NotifyLowMaintenanceBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap offline {
             get {
                 object obj = ResourceManager.GetObject("offline", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a  da impressora .
+        /// </summary>
+        internal static string OfPrinter {
+            get {
+                return ResourceManager.GetString("OfPrinter", resourceCulture);
             }
         }
         

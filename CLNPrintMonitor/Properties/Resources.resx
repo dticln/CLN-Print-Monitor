@@ -185,7 +185,7 @@
     <value>Baixo</value>
   </data>
   <data name="MonitorAgent" xml:space="preserve">
-    <value>CLNPrinterMonitor Agent </value>
+    <value>Print Monitor Agent</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>name</value>
@@ -243,5 +243,26 @@
   </data>
   <data name="SecureKeyContent" xml:space="preserve">
     <value>EAAAAODvIEh6soiWMPKLF8brWaRUFuz+ILwkN4Km2k43mlvJqQ8R86Mw7HzaFEh+tG4krRDFSUtEBdSlDhZW6aHyblqXPI0C0kC5JuUcOQ/mkNcO/ZFXGUe0w66VoIDkmoRdn5x3U2SibK7yan5GXpikAm3zua8iunBczRmvlciaM/R91p55AtHHyXFZmwxXoqmVrfGHFE3qYXp05ALdRPwGpYA=</value>
+  </data>
+  <data name="NotifyEnabled" xml:space="preserve">
+    <value>O Print Monitor Agent está rodando em segundo plano.</value>
+  </data>
+  <data name="NotifyLow" xml:space="preserve">
+    <value>está baixo.</value>
+  </data>
+  <data name="NotifyLowFC" xml:space="preserve">
+    <value>Kit FC baixo</value>
+  </data>
+  <data name="NotifyLowFCBody" xml:space="preserve">
+    <value>O kit FC da impressora </value>
+  </data>
+  <data name="NotifyLowMaintenance" xml:space="preserve">
+    <value>Kit de manutenção baixo</value>
+  </data>
+  <data name="NotifyLowMaintenanceBody" xml:space="preserve">
+    <value>O kit de manutenção da impressora </value>
+  </data>
+  <data name="OfPrinter" xml:space="preserve">
+    <value> da impressora </value>
   </data>
 </root>

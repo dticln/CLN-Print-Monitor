@@ -180,12 +180,18 @@ namespace CLNPrintMonitor.Util
             return document;
         }
 
-        public static void Notify(NotifyIcon notify, Printer printer, ToolTipIcon icon, String title, String body, int time)
+        public static void Notify(NotifyIcon notify, ToolTipIcon icon, String title, String body, int time)
         {
             notify.BalloonTipIcon = icon;
             notify.BalloonTipTitle = title;
             notify.BalloonTipText = body;
             notify.ShowBalloonTip(time);
+        }
+
+
+        public static void ConnectionErrorMessage()
+        {
+            MessageBox.Show(Resources.ConnectionErrorBody, Resources.ConnectionErrorHeader, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
         }
     }
 

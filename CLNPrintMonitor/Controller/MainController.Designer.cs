@@ -32,6 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.btnAddPrinter = new System.Windows.Forms.Button();
             this.lvwMain = new System.Windows.Forms.ListView();
+            this.clhName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clhIpv4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clhStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbxNamePrinter = new System.Windows.Forms.TextBox();
             this.tbxIpPrinter = new System.Windows.Forms.TextBox();
@@ -59,13 +62,16 @@
             this.cmsNonListViewItem = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.atualizarStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.atualizarImpressorasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clhName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clhIpv4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clhStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tsmNotifyClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmNotifyStatus = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmNotifyUpdateList = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmNotifyReport = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.mnsHeader.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.cmsListViewItem.SuspendLayout();
+            this.cmsNotify.SuspendLayout();
             this.cmsNonListViewItem.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -187,19 +193,19 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem1.Text = "&Relatórios";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.NewReportForm);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(123, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // tsmExit
             // 
             this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(126, 22);
+            this.tsmExit.Size = new System.Drawing.Size(152, 22);
             this.tsmExit.Text = "&Sair";
             this.tsmExit.Click += new System.EventHandler(this.ExitClick);
             // 
@@ -287,8 +293,14 @@
             // 
             // cmsNotify
             // 
+            this.cmsNotify.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmNotifyReport,
+            this.tsmNotifyUpdateList,
+            this.tsmNotifyStatus,
+            this.toolStripSeparator2,
+            this.tsmNotifyClose});
             this.cmsNotify.Name = "cmsNotify";
-            this.cmsNotify.Size = new System.Drawing.Size(61, 4);
+            this.cmsNotify.Size = new System.Drawing.Size(187, 120);
             // 
             // sfdReport
             // 
@@ -318,6 +330,39 @@
             this.atualizarImpressorasToolStripMenuItem.Text = "Atualizar impressoras";
             this.atualizarImpressorasToolStripMenuItem.Click += new System.EventHandler(this.UpdatePrinterList);
             // 
+            // tsmNotifyClose
+            // 
+            this.tsmNotifyClose.Name = "tsmNotifyClose";
+            this.tsmNotifyClose.Size = new System.Drawing.Size(186, 22);
+            this.tsmNotifyClose.Text = "Fechar";
+            this.tsmNotifyClose.Click += new System.EventHandler(this.ExitClick);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(183, 6);
+            // 
+            // tsmNotifyStatus
+            // 
+            this.tsmNotifyStatus.Name = "tsmNotifyStatus";
+            this.tsmNotifyStatus.Size = new System.Drawing.Size(186, 22);
+            this.tsmNotifyStatus.Text = "Atualizar status";
+            this.tsmNotifyStatus.Click += new System.EventHandler(this.UpdatePrinterStatus);
+            // 
+            // tsmNotifyUpdateList
+            // 
+            this.tsmNotifyUpdateList.Name = "tsmNotifyUpdateList";
+            this.tsmNotifyUpdateList.Size = new System.Drawing.Size(186, 22);
+            this.tsmNotifyUpdateList.Text = "Atualizar impressoras";
+            this.tsmNotifyUpdateList.Click += new System.EventHandler(this.UpdatePrinterList);
+            // 
+            // tsmNotifyReport
+            // 
+            this.tsmNotifyReport.Name = "tsmNotifyReport";
+            this.tsmNotifyReport.Size = new System.Drawing.Size(186, 22);
+            this.tsmNotifyReport.Text = "Relatórios";
+            this.tsmNotifyReport.Click += new System.EventHandler(this.NewReportForm);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -340,6 +385,7 @@
             this.mnsHeader.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.cmsListViewItem.ResumeLayout(false);
+            this.cmsNotify.ResumeLayout(false);
             this.cmsNonListViewItem.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -379,6 +425,11 @@
         public System.Windows.Forms.ColumnHeader clhName;
         public System.Windows.Forms.ColumnHeader clhIpv4;
         public System.Windows.Forms.ColumnHeader clhStatus;
+        private System.Windows.Forms.ToolStripMenuItem tsmNotifyClose;
+        private System.Windows.Forms.ToolStripMenuItem tsmNotifyReport;
+        private System.Windows.Forms.ToolStripMenuItem tsmNotifyUpdateList;
+        private System.Windows.Forms.ToolStripMenuItem tsmNotifyStatus;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
 
