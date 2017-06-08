@@ -545,7 +545,7 @@ namespace CLNPrintMonitor.Properties {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a EAAAAODvIEh6soiWMPKLF8brWaRUFuz+ILwkN4Km2k43mlvJqQ8R86Mw7HzaFEh+tG4krRDFSUtEBdSlDhZW6aHyblqXPI0C0kC5JuUcOQ/mkNcO/ZFXGUe0w66VoIDkmoRdn5x3U2SibK7yan5GXpikAm3zua8iunBczRmvlciaM/R91p55AtHHyXFZmwxXoqmVrfGHFE3qYXp05ALdRPwGpYA=.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a EAAAAE0pT8ZH3mkkxbhfLPs7kQ2nuOk+TWdbkh/PeHM7a+8T816+kCap4AqQAIzV2i0jHS4pIsLtyJ92emQgTWLW60yqmcrRZD7XQAO3PoEMZzhkpmN/JFwv1e5RRykTsaQWkTRLd2YQSJMz2M8/qyAs+OM=.
         /// </summary>
         internal static string SecureKeyContent {
             get {

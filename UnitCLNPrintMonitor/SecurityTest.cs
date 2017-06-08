@@ -1,5 +1,6 @@
 ﻿using CLNPrintMonitor.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace UnitCLNPrintMonitor
 {
@@ -7,7 +8,7 @@ namespace UnitCLNPrintMonitor
     public class SecurityTest
     {
 
-        private string secret = "teste";
+        private string secret = "4wQ7wfUePocSRV1svShrhPS+TQehjPCAJOnolGCz3ARJ8zg3yeFo6LrbLW/lxkdoISwXUDPsa6RxuERWU6aezA==";
 
         [TestMethod]
         public void TestEncrypt()
@@ -17,6 +18,7 @@ namespace UnitCLNPrintMonitor
             Assert.AreNotEqual(response, string.Empty);
             string newest = Security.Decrypt(response);
             Assert.AreEqual(secret, newest);
+            Console.WriteLine(response);
         }
 
     }

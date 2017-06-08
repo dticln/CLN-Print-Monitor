@@ -35,11 +35,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.sfdReport = new System.Windows.Forms.SaveFileDialog();
+            this.chbEmail = new System.Windows.Forms.CheckBox();
+            this.pgbLoading = new System.Windows.Forms.ProgressBar();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.pgbLoading);
             this.groupBox1.Controls.Add(this.lvwPrinters);
             this.groupBox1.Location = new System.Drawing.Point(12, 25);
             this.groupBox1.Name = "groupBox1";
@@ -57,7 +60,7 @@
             this.lvwPrinters.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvwPrinters.Location = new System.Drawing.Point(6, 19);
             this.lvwPrinters.Name = "lvwPrinters";
-            this.lvwPrinters.Size = new System.Drawing.Size(398, 375);
+            this.lvwPrinters.Size = new System.Drawing.Size(398, 346);
             this.lvwPrinters.TabIndex = 0;
             this.lvwPrinters.UseCompatibleStateImageBehavior = false;
             this.lvwPrinters.View = System.Windows.Forms.View.Details;
@@ -97,11 +100,30 @@
             this.sfdReport.Filter = "Arquivo PDF|*.pdf";
             this.sfdReport.Title = "Relatório de impressão";
             // 
+            // chbEmail
+            // 
+            this.chbEmail.AutoSize = true;
+            this.chbEmail.Location = new System.Drawing.Point(12, 435);
+            this.chbEmail.Name = "chbEmail";
+            this.chbEmail.Size = new System.Drawing.Size(104, 17);
+            this.chbEmail.TabIndex = 4;
+            this.chbEmail.Text = "Enviar por e-mail";
+            this.chbEmail.UseVisualStyleBackColor = true;
+            // 
+            // pgbLoading
+            // 
+            this.pgbLoading.Location = new System.Drawing.Point(6, 371);
+            this.pgbLoading.Name = "pgbLoading";
+            this.pgbLoading.Size = new System.Drawing.Size(398, 23);
+            this.pgbLoading.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.pgbLoading.TabIndex = 5;
+            // 
             // ReportController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(434, 466);
+            this.Controls.Add(this.chbEmail);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
@@ -125,5 +147,7 @@
         private System.Windows.Forms.ColumnHeader ColumnHeaderName;
         private System.Windows.Forms.ColumnHeader ColumnHeaderIpv4;
         private System.Windows.Forms.SaveFileDialog sfdReport;
+        private System.Windows.Forms.CheckBox chbEmail;
+        private System.Windows.Forms.ProgressBar pgbLoading;
     }
 }

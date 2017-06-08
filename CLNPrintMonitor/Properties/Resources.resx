@@ -242,7 +242,7 @@
     <value>/cgi-bin/dynamic/printer/config/reports/devicestatistics.html</value>
   </data>
   <data name="SecureKeyContent" xml:space="preserve">
-    <value>EAAAAODvIEh6soiWMPKLF8brWaRUFuz+ILwkN4Km2k43mlvJqQ8R86Mw7HzaFEh+tG4krRDFSUtEBdSlDhZW6aHyblqXPI0C0kC5JuUcOQ/mkNcO/ZFXGUe0w66VoIDkmoRdn5x3U2SibK7yan5GXpikAm3zua8iunBczRmvlciaM/R91p55AtHHyXFZmwxXoqmVrfGHFE3qYXp05ALdRPwGpYA=</value>
+    <value>EAAAAE0pT8ZH3mkkxbhfLPs7kQ2nuOk+TWdbkh/PeHM7a+8T816+kCap4AqQAIzV2i0jHS4pIsLtyJ92emQgTWLW60yqmcrRZD7XQAO3PoEMZzhkpmN/JFwv1e5RRykTsaQWkTRLd2YQSJMz2M8/qyAs+OM=</value>
   </data>
   <data name="NotifyEnabled" xml:space="preserve">
     <value>O Print Monitor Agent está rodando em segundo plano.</value>

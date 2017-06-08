@@ -3,6 +3,8 @@ using CLNPrintMonitor.Util;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System;
+using System.Globalization;
 
 namespace CLNPrintMonitor.Controller
 {
@@ -65,24 +67,62 @@ namespace CLNPrintMonitor.Controller
             }
             if (sfdReport.ShowDialog() == DialogResult.OK)
             {
-                string buffer = "";
-                foreach(ListViewItem item in this.lvwPrinters.Items)
+                int total = this.lvwPrinters.Items.Count;
+                this.pgbLoading.Value = 0;
+                List<HtmlAgilityPack.HtmlDocument> pages = await this.PrinterPageLoad(100 / total);
+                this.pgbLoading.Value = 100;
+                if (pages.Count != 0)
                 {
-                    if (item.Checked)
-                    {
-                        Printer printer = this.printers.Find(find => find.Name == item.Text);
-                        if(printer != null)
-                        {
-                            buffer += await printer.GetRawReportFromDevice();
-                        }
-                    }
-                }
-                if(buffer != "")
-                {
-                    byte[] file = Helpers.CreatePDF(Helpers.CreateDocument(buffer));
-                    Helpers.SavePdfFile(sfdReport.FileName,file);
+                    this.SavePDFFromPages(pages);
                 }
             }
         } 
+
+        private async Task<List<HtmlAgilityPack.HtmlDocument>> PrinterPageLoad(int perPageItemPercent = 10)
+        {
+            var pages = new List<HtmlAgilityPack.HtmlDocument>();
+            foreach (ListViewItem item in this.lvwPrinters.Items)
+            {
+                if (item.Checked)
+                {
+                    Printer printer = this.printers.Find(find => find.Name == item.Text);
+                    if (printer != null)
+                    {
+                        string buffer = await printer.GetRawReportFromDevice();
+                        buffer = buffer.Replace(
+                            "<title>Estat. do dispositivo</title>",
+                            "<h2>" + printer.Address.ToString() + "</h2><br/>");
+                        buffer = buffer.Replace(
+                            "<center><FONT STYLE=\"font-family: sans-serif; font-size: 20pt; font-weight: bold; color: #0000EE\">Estat. do dispositivo</FONT></center>",
+                            "<h3>" + printer.Name + "</h3><br/>");
+                        pages.Add(Helpers.CreateDocument(buffer));
+                    }
+                }
+                this.pgbLoading.Value += perPageItemPercent;
+            }
+            return pages;
+        }
+
+        private void SavePDFFromPages(List<HtmlAgilityPack.HtmlDocument> pages)
+        {
+            byte[] file = Helpers.CreateMultiPagePDF(pages);
+            if (chbEmail.Checked)
+            {
+                Helpers.SavePdfFile(sfdReport.FileName, file, false);
+                Console.WriteLine(sfdReport.FileName);
+                MapiMailMessage message = new MapiMailMessage(
+                    "Relatório de impressão de " + DateTime.Now.ToString("MMMM 'de' yyyy", CultureInfo.CreateSpecificCulture("pt-br")) + " do Campus Litoral Norte", 
+                    "Prezados, \n\nsegue anexo o relatório de impressão de " + 
+                    DateTime.Now.ToString("dd 'de' MMMM 'de' yyyy", CultureInfo.CreateSpecificCulture("pt-br")) + 
+                    " do Campus Litoral Norte. \nPor favor, confirmar recebimento.\n\nAtenciosamente, \nDivisão de Tecnologia da Informação\nCampus Litoral Norte\nUniversidade Federal do Rio Grande do Sul");
+                message.Recipients.Add("tecnoset@cpd.ufrgs.br; suporte.ufrgs@tecnoset.com.br");
+                message.Files.Add(@sfdReport.FileName);
+                message.ShowDialog();
+            }
+            else
+            {
+                Helpers.SavePdfFile(sfdReport.FileName, file);
+            }
+        }
     }
 }

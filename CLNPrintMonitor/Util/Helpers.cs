@@ -13,6 +13,11 @@ using CLNPrintMonitor.Properties;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
+using iTextSharp.tool.xml;
+using System.Xml;
+using iTextSharp.tool.xml.html;
+using iTextSharp.tool.xml.pipeline.html;
+using iTextSharp.tool.xml.pipeline.end;
 
 namespace CLNPrintMonitor.Util
 {
@@ -135,12 +140,15 @@ namespace CLNPrintMonitor.Util
         /// <param name="path">Nome do arquivo</param>
         /// <param name="stream">PDF</param>
         /// <returns>Resposta</returns>
-        public static bool SavePdfFile(string path, byte[] stream)
+        public static bool SavePdfFile(string path, byte[] stream, bool openOnReader = true)
         {
             try
             {
                 File.WriteAllBytes(path, stream);
-                System.Diagnostics.Process.Start(path);
+                if(openOnReader)
+                {
+                    System.Diagnostics.Process.Start(path);
+                }
                 return true;
             }
             catch (Exception e)
@@ -171,6 +179,26 @@ namespace CLNPrintMonitor.Util
             return msOutput.ToArray();
         }
         
+        public static byte[] CreateMultiPagePDF(List<HtmlAgilityPack.HtmlDocument> pages)
+        {
+            MemoryStream msOutput = new MemoryStream();
+            Document document = new Document(PageSize.A4, 40, 40, 40, 40);
+            PdfWriter writer = PdfWriter.GetInstance(document, msOutput);
+            HTMLWorker worker = new HTMLWorker(document);
+            
+            document.Open();
+            worker.StartDocument();
+            foreach(var item in pages)
+            {
+                worker.Parse(new StringReader(item.DocumentNode.InnerHtml));
+                document.NewPage();
+            }
+            worker.EndDocument();
+            worker.Close();
+            document.Close();
+            return msOutput.ToArray();
+        }
+
         /// <summary>
         /// Cria um HtmlDocument a partir de uma string
         /// </summary>
