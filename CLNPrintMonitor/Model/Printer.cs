@@ -87,7 +87,7 @@ namespace CLNPrintMonitor.Model
         internal static string REPORT_URI = Resources.ReportUri;
         internal static string NODE_QUERY = Resources.NodeQuery;
         internal static string NODE_STATUS_QUERY = Resources.NodeStatusQuery;
-        internal static string LOW_TONER_WARNING = Resources.NodeQuery;
+        internal static string LOW_TONER_WARNING = Resources.LowTonerWarning;
         internal static string UNKNOWN_WARNING = Resources.UnknownWarning;
         internal static string NODE_TD = Resources.NodeTd;
 

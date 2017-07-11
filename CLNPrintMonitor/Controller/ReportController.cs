@@ -115,7 +115,8 @@ namespace CLNPrintMonitor.Controller
                     "Prezados, \n\nsegue anexo o relatório de impressão de " + 
                     DateTime.Now.ToString("dd 'de' MMMM 'de' yyyy", CultureInfo.CreateSpecificCulture("pt-br")) + 
                     " do Campus Litoral Norte. \nPor favor, confirmar recebimento.\n\nAtenciosamente, \nDivisão de Tecnologia da Informação\nCampus Litoral Norte\nUniversidade Federal do Rio Grande do Sul");
-                message.Recipients.Add("tecnoset@cpd.ufrgs.br; suporte.ufrgs@tecnoset.com.br");
+                message.Recipients.Add("Tecnoset <tecnoset@cpd.ufrgs.br>");
+                message.Recipients.Add(" Suporte ufrgs <suporte.ufrgs@tecnoset.com.br>");
                 message.Files.Add(@sfdReport.FileName);
                 message.ShowDialog();
             }
